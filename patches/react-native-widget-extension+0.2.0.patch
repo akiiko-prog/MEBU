@@ -1,0 +1,67 @@
+diff --git a/node_modules/react-native-widget-extension/ios/Attributes.swift b/node_modules/react-native-widget-extension/ios/Attributes.swift
+new file mode 100644
+index 0000000..bb2fdd4
+--- /dev/null
++++ b/node_modules/react-native-widget-extension/ios/Attributes.swift
+@@ -0,0 +1,11 @@
++import Foundation
++import ActivityKit
++
++struct PizzaDeliveryAttributes: ActivityAttributes {
++    public struct ContentState: Codable, Hashable {
++        var driverName: String
++        var deliveryTimer: ClosedRange<Date>
++    }
++    var numberOfPizzas: Int
++    var totalAmount: String
++}
+diff --git a/node_modules/react-native-widget-extension/ios/Module.swift b/node_modules/react-native-widget-extension/ios/Module.swift
+new file mode 100644
+index 0000000..2aeac2a
+--- /dev/null
++++ b/node_modules/react-native-widget-extension/ios/Module.swift
+@@ -0,0 +1,5 @@
++import Foundation
++
++@objc(WidgetModule)
++class WidgetModule: NSObject {
++}
+diff --git a/node_modules/react-native-widget-extension/ios/ReactNativeWidgetExtensionModule.swift b/node_modules/react-native-widget-extension/ios/ReactNativeWidgetExtensionModule.swift
+new file mode 100644
+index 0000000..269d6aa
+--- /dev/null
++++ b/node_modules/react-native-widget-extension/ios/ReactNativeWidgetExtensionModule.swift
+@@ -0,0 +1,7 @@
++import ExpoModulesCore
++
++public class ReactNativeWidgetExtensionModule: Module {
++    public func definition() -> ModuleDefinition {
++        Name("ReactNativeWidgetExtension")
++    }
++}
+diff --git a/node_modules/react-native-widget-extension/plugin/build/withPodfile.js b/node_modules/react-native-widget-extension/plugin/build/withPodfile.js
+index 8469c04..e2aa4b3 100644
+--- a/node_modules/react-native-widget-extension/plugin/build/withPodfile.js
++++ b/node_modules/react-native-widget-extension/plugin/build/withPodfile.js
+@@ -63,6 +63,8 @@ const withPodfile = (config, { targetName }) => {
+               offset: -1,
+               comment: "#",
+             }).contents; */
++            // Remove any previously inserted widget block to prevent duplication
++            podFileContent = podFileContent.replace(/\n*# >>> Inserted by react-native-widget-extension[\s\S]*?# >>> Inserted by react-native-widget-extension\n*/g, '');
+             podFileContent = podFileContent
+                 .concat(`\n\n# >>> Inserted by react-native-widget-extension\n`)
+                 .concat(`
+diff --git a/node_modules/react-native-widget-extension/plugin/build/xcode/addXCConfigurationList.js b/node_modules/react-native-widget-extension/plugin/build/xcode/addXCConfigurationList.js
+index a54ddc3..a2ef32a 100644
+--- a/node_modules/react-native-widget-extension/plugin/build/xcode/addXCConfigurationList.js
++++ b/node_modules/react-native-widget-extension/plugin/build/xcode/addXCConfigurationList.js
+@@ -32,7 +32,7 @@ function addXCConfigurationList(xcodeProject, { targetName, currentProjectVersio
+         CURRENT_PROJECT_VERSION: `"${currentProjectVersion}"`,
+         IPHONEOS_DEPLOYMENT_TARGET: `"${deploymentTarget}"`,
+         PRODUCT_BUNDLE_IDENTIFIER: `"${bundleIdentifier}"`,
+-        GENERATE_INFOPLIST_FILE: `"YES"`,
++        GENERATE_INFOPLIST_FILE: `"NO"`,
+         INFOPLIST_KEY_CFBundleDisplayName: targetName,
+         INFOPLIST_KEY_NSHumanReadableCopyright: `""`,
+         MARKETING_VERSION: `"${marketingVersion}"`,

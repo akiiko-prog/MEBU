@@ -1,0 +1,216 @@
+export interface Grade {
+  code: string;
+  type: string;
+  name: string;
+  semester: number;
+  grade: number;
+  coefficient?: number; // per-evaluation coefficient (%) from the grades API
+  alphaMark?: string; // VA, NV, etc. for validation-based grades
+  syncedAt?: number; // Timestamp of when this grade was first synced
+}
+
+export interface Coeff {
+  name: string;
+  value: number;
+}
+
+export interface Syllabus {
+  id: number;
+  UE: string;
+  semester: number;
+  name: string;
+  code: string;
+  minScore: number;
+  duration: number;
+  period: Period;
+  exams: Exam[];
+  courseDescription: CourseDescription;
+  caption: Caption;
+  responsables: Responsable[];
+  instructorsValidator: Instructor[];
+  instructorsEditors: Instructor[];
+  activities: Activity[];
+  locations: Location[];
+  grade?: number;
+  matchedGrades?: (Grade & { weighting: number })[];
+  coeff?: number;
+}
+
+export interface Period {
+  startDate: string;
+  endDate: string;
+}
+
+export interface Exam {
+  id: number;
+  index: number; // Component index for grade code construction
+  description: Description;
+  type: string;
+  typeName: string;
+  weighting: number;
+}
+
+export interface Description {
+  fr?: string;
+  en?: string;
+}
+
+export interface CourseDescription {
+  coursPlan: Description;
+  expected: Description[];
+}
+
+export interface Caption {
+  name: string;
+  goals: Description;
+  program: Description;
+}
+
+export interface Responsable {
+  uid: number;
+  login: string;
+  lastName: string;
+  firstName: string;
+}
+
+export interface Instructor {
+  uid: number;
+  login: string;
+  lastName: string;
+  firstName: string;
+}
+
+export interface Activity {
+  id: number;
+  type: string;
+  typeName: string;
+  duration?: number;
+}
+
+export interface Location {
+  code: string;
+  name: string;
+}
+
+export interface UserData {
+  parent1?: Parent;
+  parent2?: Parent;
+  financialGuarantor?: FinancialGuarantor;
+  student: Student;
+  highSchool?: HighSchool;
+}
+
+export interface Parent {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  address: string;
+  city: string;
+  zipCode: string;
+  country: number;
+}
+
+export interface FinancialGuarantor {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  address: string;
+  city: string;
+  zipCode: string;
+  country: number;
+}
+
+export interface Student {
+  login: string;
+  class?: string;
+  schoolMail: string;
+  mail: string;
+  phone: string;
+  firstName: string;
+  lastName: string;
+  birthDate: string;
+  cityOfBirth: string;
+  countryOfBirth: string;
+  gender: string;
+  adress: Address;
+  city: string;
+  country: string;
+  entryYear: number;
+}
+
+export interface Address {
+  street1: string;
+  street2?: string;
+}
+
+export interface HighSchool {
+  option1?: string;
+  option2?: string;
+  language1?: string;
+  language2?: string;
+  examType?: string;
+  department?: string;
+}
+
+export interface EdtName {
+  code: string;
+  name: string;
+}
+
+export interface EdtActivityType {
+  code: string;
+  name: string;
+  isExam: boolean;
+}
+
+export interface EdtInstructor {
+  firstName: string;
+  lastName: string;
+  login: string;
+}
+
+export interface EdtClass {
+  code: string;
+  name: string;
+}
+
+export interface EdtClassType {
+  code: string;
+  name: string;
+}
+
+export interface EdtCapacity {
+  cours: number;
+  exam: number;
+}
+
+export interface EdtLocation {
+  code: string;
+  name: string;
+  classType: EdtClassType;
+  capacity: EdtCapacity;
+  floor: number;
+}
+
+export interface EdtInterventionStatus {
+  code: string;
+}
+
+export interface EdtEvent {
+  id: number;
+  name: EdtName;
+  UE: string;
+  day: string;
+  startTime: string;
+  endTime: string;
+  duration: number;
+  description: string;
+  timeZone: string;
+  activityType: EdtActivityType;
+  instructors: EdtInstructor[];
+  class: EdtClass[];
+  locations: EdtLocation[];
+  interventionStatus: EdtInterventionStatus;
+}

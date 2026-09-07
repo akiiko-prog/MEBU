@@ -1,0 +1,6 @@
+{
+  "name": "WidgetManager",
+  "ios": {
+    "modules": ["WidgetManagerModule"]
+  }
+}

@@ -1,0 +1,99 @@
+import { useTheme } from '@react-navigation/native';
+import { RelativePathString, router, UnknownInputParams } from 'expo-router';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { Image, View } from 'react-native';
+import Reanimated, { FadeInDown } from 'react-native-reanimated';
+
+import OnboardingScrollingFlatList from "@/components/onboarding/OnboardingScrollingFlatList";
+import AnimatedPressable from '@/ui/components/AnimatedPressable';
+import Icon from '@/ui/components/Icon';
+import Typography from '@/ui/components/Typography';
+
+import { GetSupportedServices, SupportedService } from './utils/constants';
+
+
+export default function WelcomeScreen() {
+  const theme = useTheme();
+  const { colors } = theme;
+  const { t } = useTranslation();
+
+  const services = GetSupportedServices((path: { pathname: string, options?: UnknownInputParams }) => {
+    router.push({
+      pathname: path.pathname as unknown as RelativePathString,
+      params: path.options ?? {} as unknown as UnknownInputParams
+    });
+  });
+
+  return (
+    <OnboardingScrollingFlatList
+      color={'#0060D6'}
+      title={t("ONBOARDING_SELECT_SCHOOLSERVICE")}
+      step={1}
+      totalSteps={2}
+      elements={services}
+      renderItem={({ item, index }: { item: SupportedService, index: number }) => item.type === 'separator' ? (
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 18,
+            marginVertical: 6,
+            opacity: 0.4,
+            marginHorizontal: 32,
+          }}
+        />
+      ) :
+        (
+          <Reanimated.View
+            entering={FadeInDown.springify().duration(400).delay(index * 80 + 150)}
+          >
+            <AnimatedPressable
+              onPress={() => {
+                requestAnimationFrame(() => {
+                  item.onPress();
+                });
+              }}
+              style={[
+                {
+                  paddingHorizontal: 18,
+                  paddingVertical: 14,
+                  borderColor: colors.border,
+                  borderWidth: 1.5,
+                  borderRadius: 80,
+                  borderCurve: "continuous",
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  display: 'flex',
+                  gap: 16,
+                },
+                item.type === "other" && !item.color && {
+                  backgroundColor: colors.text,
+                  borderColor: colors.text,
+                }
+              ]}
+            >
+              <View style={{ width: 32, height: 32, alignItems: 'center', justifyContent: 'center' }}>
+                {item.icon ?
+                  <Icon size={28} papicon fill={item.type === "other" && !item.color ? colors.background : undefined}>
+                    {item.icon}
+                  </Icon>
+                  :
+                  <Image
+                    source={item.image as any}
+                    style={{ width: 32, height: 32, borderRadius: 20 }}
+                    resizeMode="cover"
+                  />
+                }
+              </View>
+              <Typography style={{ flex: 1 }} nowrap variant='title' color={item.type === "other" && !item.color ? colors.background : undefined}>
+                {item.title}
+              </Typography>
+            </AnimatedPressable>
+          </Reanimated.View>
+        )}
+    />
+  );
+}
+

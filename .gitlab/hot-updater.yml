@@ -1,0 +1,43 @@
+fingerprint:check:
+  image: node:20-alpine
+  stage: build
+  before_script:
+    - apk add --no-cache git python3 make g++
+    - npm ci
+  script:
+    - npx hot-updater fingerprint
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == "main"
+  cache:
+    paths:
+      - node_modules/
+
+.hot-updater-deploy:
+  image: node:20-alpine
+  stage: deploy
+  id_tokens:
+    CI_JOB_JWT_V2:
+      aud: https://hot-updater.epimac.org
+  before_script:
+    - apk add --no-cache git python3 make g++
+    - npm ci
+    - mkdir -p keys
+    - cp "$HOT_UPDATER_PRIVATE_KEY" keys/private-key.pem
+    - chmod 600 keys/private-key.pem
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      when: manual
+  cache:
+    paths:
+      - node_modules/
+
+deploy:ios:
+  extends: .hot-updater-deploy
+  script:
+    - npx hot-updater deploy --platform ios -c "production"
+
+deploy:android:
+  extends: .hot-updater-deploy
+  script:
+    - npx hot-updater deploy --platform android -c "production"

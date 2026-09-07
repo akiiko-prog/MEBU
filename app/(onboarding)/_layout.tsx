@@ -1,0 +1,52 @@
+import React from 'react';
+import { View } from 'react-native';
+
+import { Stack } from '@/utils/native/AnimatedNavigator';
+import { screenOptions } from "@/utils/theme/ScreenOptions";
+
+export default function OnboardingLayout() {
+    const newScreenOptions = React.useMemo(() => ({
+        ...screenOptions,
+        headerShown: false,
+        headerBackVisible: true,
+        headerTitle: '',
+        gestureEnabled: false,
+        headerTransparent: true,
+        headerTintColor: "#FFFFFF",
+        headerBackButtonDisplayMode: "minimal",
+        headerBackButtonMenuEnabled: false
+    }), []);
+
+    return (
+        <View style={{ flex: 1, backgroundColor: "black" }}>
+            <Stack>
+                <Stack.Screen
+                    name="welcome"
+                    options={{ ...newScreenOptions }}
+                />
+                <Stack.Screen
+                    name="serviceSelection"
+                    options={{ ...newScreenOptions }}
+                />
+                <Stack.Screen
+                    name="end/color"
+                    options={{ ...newScreenOptions }}
+                    initialParams={{ accountId: "" }}
+                />
+                <Stack.Screen
+                    name="university/method"
+                    options={{ ...newScreenOptions }}
+                />
+                <Stack.Screen
+                    name="university/multi/credentials"
+                    options={{ ...newScreenOptions }}
+                />
+                <Stack.Screen
+                    name="izly/credentials"
+                    options={{ ...newScreenOptions }}
+                    initialParams={{ url: "", previousPage: "map" }}
+                />
+            </Stack>
+        </View>
+    );
+}

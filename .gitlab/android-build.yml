@@ -1,0 +1,14 @@
+build:android_apk:
+  stage: build
+  image: reactnativecommunity/react-native-android:latest
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^apk-/
+  script:
+    - npm ci
+    - cd android
+    - chmod +x gradlew
+    - ./gradlew assembleDebug
+  artifacts:
+    paths:
+      - android/app/build/outputs/apk/debug/app-debug.apk
+    expire_in: 4 weeks 

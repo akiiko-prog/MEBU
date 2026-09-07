@@ -1,0 +1,8 @@
+{
+    "name": "AndroidWidgetUpdater",
+    "android": {
+        "modules": [
+            "expo.modules.androidwidgetupdater.AndroidWidgetUpdaterModule"
+        ]
+    }
+}

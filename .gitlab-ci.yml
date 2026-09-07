@@ -1,0 +1,7 @@
+stages:
+  - build
+  - deploy
+
+include:
+  - local: '.gitlab/android-build.yml'
+  - local: '.gitlab/hot-updater.yml'
