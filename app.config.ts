@@ -20,7 +20,7 @@ const androidVersionCode =
 module.exports = {
   expo: {
     name: "Chrysalide",
-    slug: "chrysalide",
+    slug: "MyESMEWorks",
     version: appVersion,
     orientation: "portrait",
     icon: "./assets/images/icon.png",
@@ -31,7 +31,7 @@ module.exports = {
 
     extra: {
       eas: {
-        projectId: "73e30bf7-efe5-4d42-b06e-3ce3c0b38c0d",
+        projectId: "7c73c7d8-e7cf-4840-9ec0-a4c5bc7ddcf1",
       },
     },
 
