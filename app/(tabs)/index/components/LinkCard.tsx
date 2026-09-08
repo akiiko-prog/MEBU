@@ -25,19 +25,10 @@ interface LinkCardProps {
 const AnimatedPressable = Reanimated.createAnimatedComponent(Pressable);
 
 export const LinksList = [
-    { title: "Signalement", url: "https://epita.signalement.net/", color: "#3A56D0" },
-    { title: "Intranet", url: "https://intra.forge.epita.fr/", color: "#C50017" },
-    { title: "Moodle", url: "https://moodle.epita.fr/", color: "#6BAE00" },
-    { title: "Moodle (Exam)", url: "https://moodle-exam.epita.fr/login/index.php?loginredirect=1", color: "#0062e2" },
-    { title: "News", url: "https://news.epita.fr/", color: "#e200b1" },
-    { title: "EPITA IT", url: "https://epita.it/", color: "#fa8c3a" },
-    { title: "Console", url: "https://console.bocal.org/", color: "#26B290" },
-    { title: "Fleet", url: "https://fleet.pie.cri.epita.fr/", color: "#C50066" },
-    { title: "Study Abroad", url: "https://epitafr.sharepoint.com/sites/EPITAStudyAbroad", color: "#DD6B00" },
-    { title: "Scolarités", url: "https://epitafr.sharepoint.com/sites/EPITAscolarites", color: "#962DD8" },
-    { title: "Tickets", url: "https://tickets.forge.epita.fr/", color: "#2DB9D8" },
-    { title: "Gitlab", url: "https://gitlab.cri.epita.fr/", color: "#26B290" },
-    { title: "Relations Entreprises", url: "https://epita.net/", color: "#2112ec" },
+    { title: "Intranet", url: "https://intranet-joule.esme.fr/", color: "#C50017" },
+    { title: "Moodle", url: "https://moodle.esme.fr/", color: "#6BAE00" },
+    { title: "Extranet", url: "https://web.esme.fr/", color: "#fa8c3a" },
+    { title: "Office 365", url: "https://www.office.com/", color: "#0062e2" },
 ];
 
 const LinkCard: React.FC<LinkCardProps> = ({ event, borderRadius = 20, style }) => {
