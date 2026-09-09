@@ -32,6 +32,13 @@ export default function SettingsAbout() {
       leading: <Avatar size={40} shape="square" initials={getInitials("Arthaud Delvau")} imageUrl={Image.resolveAssetSource(require("@/assets/images/about/Arthaud_Delvau.jpeg")).uri} />,
       onPress: () => Linking.openURL("https://www.linkedin.com/in/arthaud-delvau-32205638b/")
     }
+    {
+      title: "Elouan Gleyze",
+      description: "Dev",
+      login: "Elouan",
+      leading: <Avatar size={40} shape="square" initials={getInitials("Elouan Gleyze")} />,
+      onPress: () => Linking.openURL("https://www.linkedin.com/in/elouan-gleyze-a43207255/")
+    }
   ]
   const Items = [
     /*
