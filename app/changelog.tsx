@@ -25,7 +25,7 @@ export default function ChangelogScreen() {
         style={{ width: 72, height: 72, alignSelf: "center", borderRadius: 20, marginBottom: 8 }}
       />
       <Typography variant="h3" align="center">
-        Bienvenue sur Chrysalide v1.0 !
+        Bienvenue sur MEBU v1.0 !
       </Typography>
       <Typography variant="body1" color="secondary" align="center">
         Cette mise à jour a été repensée de fond en comble pour améliorer votre expérience. Mais cela prend du temps, nous faisons de notre mieux pour faire de cette version la meilleure possible.
@@ -38,7 +38,7 @@ export default function ChangelogScreen() {
         Il manque (telle ou telle) fonctionnalité ?
       </Typography>
       <Typography variant="body1" color="secondary" align="center">
-        Pour vous permettre d'utiliser Chrysalide dès la rentrée, l'application est sortie plus lègere en fonctionnalités que prévu. Nous travaillons d'arrache-pied pour réintégrer les fonctionnalités manquantes au plus vite.
+        Pour vous permettre d'utiliser MEBU dès la rentrée, l'application est sortie plus lègere en fonctionnalités que prévu. Nous travaillons d'arrache-pied pour réintégrer les fonctionnalités manquantes au plus vite.
       </Typography>
 
       <View style={{ height: 16 }} />

@@ -174,7 +174,7 @@ const SyllabusView: React.FC = () => {
         ? (semesters.length > 1 ? `S${semesters[0]}-S${semesters[semesters.length - 1]}` : `S${semesters[0]}`)
         : "Syllabus";
 
-      const fileName = `Syllabus ${yearStr} - ${semStr} - généré par Chrysalide.pdf`;
+      const fileName = `Syllabus ${yearStr} - ${semStr} - généré par MEBU.pdf`;
       const newPath = `${(FileSystem as any).cacheDirectory}${fileName}`;
 
       await FileSystem.moveAsync({

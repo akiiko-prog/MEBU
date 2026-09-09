@@ -19,12 +19,12 @@ const androidVersionCode =
 
 module.exports = {
   expo: {
-    name: "Chrysalide",
-    slug: "MyESMEWorks",
+    name: "MEBU",
+    slug: "mebu",
     version: appVersion,
     orientation: "portrait",
     icon: "./assets/images/icon.png",
-    scheme: ["chrysalide", "izly", "skoapp-prod"],
+    scheme: ["mebu", "izly", "skoapp-prod"],
     platforms: ["ios", "android"],
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
@@ -43,7 +43,7 @@ module.exports = {
     ios: {
       appStoreUrl:
         "https://apps.apple.com/us/app/papillon-lappli-scolaire/id6477761165",
-      bundleIdentifier: "app.chrysalide.epita",
+      bundleIdentifier: "fr.akiiko.mebu",
       associatedDomains: [],
       buildNumber: "4",
       icon: "./assets/app.icon",
@@ -66,7 +66,7 @@ module.exports = {
         ],
       },
       entitlements: {
-        "com.apple.security.application-groups": ["group.app.chrysalide.epita"]
+        "com.apple.security.application-groups": ["group.fr.akiiko.mebu"]
       },
       supportsTablet: true,
       config: {
@@ -75,7 +75,7 @@ module.exports = {
     },
     android: {
       versionCode: 83125,
-      package: "org.epimac.chrysalide",
+      package: "fr.akiiko.mebu",
       adaptiveIcon: {
         foregroundImage: "./assets/images/adaptive-icon.png",
         backgroundColor: "#ffffff",
@@ -110,7 +110,7 @@ module.exports = {
         "expo-image-picker",
         {
           photosPermission:
-            "Chrysalide utilise ta galerie pour te permettre de personnaliser ta photo de profil",
+            "MEBU utilise ta galerie pour te permettre de personnaliser ta photo de profil",
         },
       ],
       "expo-web-browser",
@@ -127,9 +127,9 @@ module.exports = {
         "expo-location",
         {
           locationWhenInUsePermission:
-            "Chrysalide utilise ton emplacement pour trouver les établissements autour de toi.",
+            "MEBU utilise ton emplacement pour trouver les établissements autour de toi.",
           cameraPermission:
-            "Chrysalide utilise ta caméra pour scanner des QR-codes pour te connecter, pour capturer des documents, ou pour des fonctionnalités amusantes telles que les réactions.",
+            "MEBU utilise ta caméra pour scanner des QR-codes pour te connecter, pour capturer des documents, ou pour des fonctionnalités amusantes telles que les réactions.",
         },
       ],
       [

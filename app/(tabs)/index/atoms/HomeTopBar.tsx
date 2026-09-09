@@ -54,7 +54,6 @@ const HomeTopBar = ({ height = 56 }: { height?: number }) => {
         <UserProfile />
 
         <Stack direction="horizontal" hAlign="center" vAlign="end" gap={8} inline>
-          <HomeTopBarButton icon="discord" backgroundColor='#5865f2' onPress={() => router.push("/(modals)/discordServers")} />
           <HomeTopBarButton icon="gears" onPress={() => router.push("/(settings)/settings")} />
         </Stack>
       </View>

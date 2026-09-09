@@ -98,21 +98,6 @@ export function RootNavigator({ isAppReady }: { isAppReady: boolean }) {
         }}
       />
       <Stack.Screen
-        name="(modals)/discordServers"
-        options={{
-          headerShown: false,
-          headerTitle: "Discord",
-          headerLargeTitle: false,
-          presentation: "formSheet",
-          sheetAllowedDetents: Platform.OS == "ios" ? "fitToContents" : [0.3],
-          sheetGrabberVisible: true,
-          sheetCornerRadius: 50,
-          contentStyle: {
-            backgroundColor: theme.colors.background,
-          }
-        }}
-      />
-      <Stack.Screen
         name="(modals)/login-attendance"
         options={{
           headerShown: false,

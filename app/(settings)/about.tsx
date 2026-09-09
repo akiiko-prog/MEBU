@@ -26,44 +26,11 @@ export default function SettingsAbout() {
   const [contributors] = useState<Contributor[]>([])
   const Teams = [
     {
-      title: "Antoine RC",
-      description: "Settings_About_Chrysalide_Rank_Description",
-      login: "Antoine",
-      leading: <Avatar size={40} shape="square" initials={getInitials("Antoine RC")} imageUrl={Image.resolveAssetSource(require("@/assets/images/about/Team_Antoine.jpeg")).uri} />,
-      onPress: () => Linking.openURL("https://www.linkedin.com/in/antoine-rc/")
-    },
-    {
-      title: "Gaël B",
-      description: "Settings_About_Chrysalide_Rank_Description",
-      login: "Gaël",
-      leading: <Avatar size={40} shape="square" initials={getInitials("Gaël B")} imageUrl={Image.resolveAssetSource(require("@/assets/images/about/Team_Gael.jpeg")).uri} />,
-      onPress: () => Linking.openURL("https://www.linkedin.com/in/gael-benmahieddine/")
-    },
-    {
-      title: "Maxime H",
-      description: "Settings_About_Chrysalide_Rank_Description",
-      login: "Maxime",
-      leading: <Avatar size={40} shape="square" initials={getInitials("Maxime H")} imageUrl={Image.resolveAssetSource(require("@/assets/images/about/Team_Maxime.jpeg")).uri} />,
-      onPress: () => Linking.openURL("https://www.linkedin.com/in/icimaxhwl/")
-    },
-    {
-      title: "Epimac",
-      description: "Infrastructures",
-      leading: <Avatar size={40} shape="square" initials={getInitials("Epimac")} imageUrl={Image.resolveAssetSource(require("@/assets/images/epimac/pomme_bleu.jpeg")).uri} backgroundColor={Theme.colors.background} />,
-      onPress: () => Linking.openURL("https://epimac.org/")
-    },
-    {
-      title: "Beta Testeurs",
-      description: t("Settings_About_Chrysalide_Beta_Testers_Description"),
-      leading: <Avatar size={40} shape="square" initials={getInitials("Beta Testeurs")} backgroundColor={Theme.colors.background}>
-        <Papicons size={35} name="Butterfly" color={Theme.colors.primary} />
-      </Avatar>,
-    },
-    {
-      title: "Papillon",
-      description: "Origine",
-      leading: <Avatar size={40} shape="square" initials={getInitials("Lucas Lavajo")} imageUrl="https://play-lh.googleusercontent.com/wpV-VScxugHvexfYPURrkhpCxr1un_eJupTk9rHFf9TKfCBlYcrPoqyaJCVtWlX4Zw" />,
-      onPress: () => Linking.openURL("https://papillon.bzh/")
+      title: "Arthaud Delvau",
+      description: "Dev",
+      login: "Arthaud",
+      leading: <Avatar size={40} shape="square" initials={getInitials("Arthaud Delvau")} imageUrl={Image.resolveAssetSource(require("@/assets/images/about/Arthaud_Delvau.jpeg")).uri} />,
+      onPress: () => Linking.openURL("https://www.linkedin.com/in/arthaud-delvau-32205638b/")
     }
   ]
   const Items = [
@@ -72,7 +39,7 @@ export default function SettingsAbout() {
       title: t("Settings_Website"),
       description: t("Settings_Website_Description"),
       leading: <Papicons name="info" />,
-      onPress: () => Linking.openURL('chrysalide.app'),
+      onPress: () => Linking.openURL('mebu.app'),
     },*/
     {
       title: t("Settings_About_Discord"),
@@ -80,13 +47,6 @@ export default function SettingsAbout() {
       leading: <Papicons name="TextBubble" />,
       onPress: () => Linking.openURL('https://discord.gg/3QYJJj4cr8'),
     },
-    /*
-    {
-      title: t("Settings_About_Gitlab"),
-      description: t("Settings_About_Gitlab_Description"),
-      leading: <Papicons name="Ghost" />,
-      onPress: () => Linking.openURL('https://gitlab.com/epimac-asso/projects/chrysalide/ChrysalideApp/'),
-    },*/
   ];
 
   const [tapCount, setTapCount] = React.useState(0);

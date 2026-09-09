@@ -330,7 +330,7 @@ export default function AurigaLoginScreen() {
 
                 alert.showAlert({
                     title: "Compte démo chargé",
-                    description: "Bienvenue sur le compte démo Chrysalide ! Toutes les données sont fictives.",
+                    description: "Bienvenue sur le compte démo MEBU ! Toutes les données sont fictives.",
                     icon: "Check",
                     color: "#00D600",
                 });
