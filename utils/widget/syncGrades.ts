@@ -2,8 +2,8 @@ import { Platform } from 'react-native';
 import { syncGradesNative } from '@/modules/android-widget-updater';
 import SharedGroupPreferences from 'react-native-shared-group-preferences';
 
-const IOS_APP_GROUP = 'group.app.chrysalide.epita';
-const IOS_GRADES_KEY = 'chrysalideGrades';
+const IOS_APP_GROUP = 'group.fr.akiiko.mebu';
+const IOS_GRADES_KEY = 'mebuGrades';
 
 export interface WidgetGrade {
     subject: string;

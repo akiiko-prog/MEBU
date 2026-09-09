@@ -2,7 +2,7 @@ import { Platform } from 'react-native';
 import { syncAbsencesNative } from '@/modules/android-widget-updater';
 import SharedGroupPreferences from 'react-native-shared-group-preferences';
 
-const IOS_APP_GROUP = 'group.app.chrysalide.epita';
+const IOS_APP_GROUP = 'group.fr.akiiko.mebu';
 
 export interface WidgetAbsencesData {
     totalHours: number;       // total heures manquées
