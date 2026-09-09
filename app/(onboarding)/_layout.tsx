@@ -41,11 +41,6 @@ export default function OnboardingLayout() {
                     name="university/multi/credentials"
                     options={{ ...newScreenOptions }}
                 />
-                <Stack.Screen
-                    name="izly/credentials"
-                    options={{ ...newScreenOptions }}
-                    initialParams={{ url: "", previousPage: "map" }}
-                />
             </Stack>
         </View>
     );
