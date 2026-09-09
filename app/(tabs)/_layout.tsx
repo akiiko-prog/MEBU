@@ -30,7 +30,6 @@ const ICONS = {
     : require('@/assets/icons/home.svg'),
   calendar: IS_IOS_WITH_PADDING ? require('@/assets/icons/calendar_padding.svg') : require('@/assets/icons/calendar.svg'),
   grades: IS_IOS_WITH_PADDING ? require('@/assets/icons/results_padding.svg') : require('@/assets/icons/results.svg'),
-  syllabus: IS_IOS_WITH_PADDING ? require('@/assets/icons/syllabus_padding.svg') : require('@/assets/icons/syllabus.svg'),
   news: IS_IOS_WITH_PADDING ? require('@/assets/icons/news_padding.svg') : require('@/assets/icons/news.svg'),
 } as const;
 
@@ -44,7 +43,6 @@ const TAB_LABEL_STYLE = {
 const getHomeIcon = () => ICONS.home;
 const getCalendarIcon = () => ICONS.calendar;
 const getGradesIcon = () => ICONS.grades;
-const getSyllabusIcon = () => ICONS.syllabus;
 const getNewsIcon = () => ICONS.news;
 
 // Custom hook for optimized tab translations
@@ -55,7 +53,6 @@ const useTabTranslations = () => {
     home: t("Tab_Home"),
     calendar: t("Tab_Calendar"),
     grades: t("Tab_Grades"),
-    syllabus: t("Tab_Syllabus"),
     news: t("Tab_News"),
   }), [t]);
 };
@@ -78,10 +75,6 @@ export default function TabLayout() {
     grades: {
       title: translations.grades,
       tabBarIcon: getGradesIcon,
-    },
-    syllabus: {
-      title: translations.syllabus,
-      tabBarIcon: getSyllabusIcon,
     },
     news: {
       title: translations.news,
@@ -112,10 +105,6 @@ export default function TabLayout() {
       <Tabs.Screen
         name="grades"
         options={screenOptions.grades}
-      />
-      <Tabs.Screen
-        name="syllabus"
-        options={screenOptions.syllabus}
       />
       <Tabs.Screen
         name="news"

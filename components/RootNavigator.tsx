@@ -43,17 +43,6 @@ export function RootNavigator({ isAppReady }: { isAppReady: boolean }) {
       <Stack.Screen name="alert" options={ALERT_SCREEN_OPTIONS} />
 
       <Stack.Screen
-        name="(modals)/syllabus"
-        options={{
-          headerShown: false,
-          headerTitle: "",
-          presentation: "modal",
-          sheetAllowedDetents: undefined,
-          sheetGrabberVisible: true,
-          sheetCornerRadius: 20,
-        }}
-      />
-      <Stack.Screen
         name="(modals)/wallpaper"
         options={{
           presentation: "modal",
