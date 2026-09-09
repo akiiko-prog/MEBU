@@ -41,8 +41,6 @@ module.exports = {
       backgroundColor: "#0060D6",
     },
     ios: {
-      appStoreUrl:
-        "https://apps.apple.com/us/app/papillon-lappli-scolaire/id6477761165",
       bundleIdentifier: "fr.akiiko.mebu",
       associatedDomains: [],
       buildNumber: "4",
@@ -51,7 +49,7 @@ module.exports = {
       infoPlist: {
         CFBundleURLTypes: [
           {
-            CFBundleURLSchemes: ["papillon", "izly", "skoapp-prod"],
+            CFBundleURLSchemes: ["mebu", "izly", "skoapp-prod"],
           },
         ],
         CADisableMinimumFrameDurationOnPhone: true,
@@ -159,7 +157,7 @@ module.exports = {
         "react-native-widget-extension",
         {
           frequentUpdates: true,
-          groupIdentifier: "group.app.chrysalide.epita"
+          groupIdentifier: "group.fr.akiiko.mebu"
         }
       ],
       [
