@@ -25,10 +25,10 @@ interface LinkCardProps {
 const AnimatedPressable = Reanimated.createAnimatedComponent(Pressable);
 
 export const LinksList = [
-    { title: "Intranet", url: "https://intranet-joule.esme.fr/", color: "#C50017" },
+    { title: "ESME France", url: "https://www.esme.fr/", color: "#C50017" },
     { title: "Moodle", url: "https://moodle.esme.fr/", color: "#6BAE00" },
-    { title: "Extranet", url: "https://web.esme.fr/", color: "#fa8c3a" },
-    { title: "Office 365", url: "https://www.office.com/", color: "#0062e2" },
+    { title: "Auriga", url: "https://my.esme.fr/", color: "#fa8c3a" },
+    { title: "Planette esme", url: "https://esmefr.sharepoint.com/sites/AccueilESME", color: "#0062e2" },
 ];
 
 const LinkCard: React.FC<LinkCardProps> = ({ event, borderRadius = 20, style }) => {
