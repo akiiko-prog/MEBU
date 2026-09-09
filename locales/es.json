@@ -97,6 +97,8 @@
   "No_Course_Teacher": "Desconocido",
   "Event_DeleteEvent": "Eliminar evento",
   "Event_Confirm_DeleteEvent": "¿Estás seguro/a de que quieres eliminar este evento?",
+  "Event_NotAuthorized_Title": "Acceso denegado",
+  "Event_NotAuthorized_Description": "No tienes permiso para crear un evento.",
   "Course_Separator_Lunch_Default": "Almuerzo",
   "Course_Separator_Lunch_Alt_1": "¡Que aproveche!",
   "Course_Separator_Lunch_Alt_2": "¡Qué bueno!",
