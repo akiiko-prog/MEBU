@@ -8,7 +8,7 @@
  */
 
 export const EVENT_CREATOR_WHITELIST: string[] = [
-  "p.nom@epita.fr",
+  "arthuad.delvau@esme.fr",
   // "a.autre@epita.fr",
 ];
 
