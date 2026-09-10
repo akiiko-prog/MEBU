@@ -63,6 +63,14 @@ export function RootNavigator({ isAppReady }: { isAppReady: boolean }) {
         }}
       />
       <Stack.Screen
+        name="(modals)/create-event"
+        options={{
+          presentation: "modal",
+          headerShown: true,
+          headerTitle: "Événement",
+        }}
+      />
+      <Stack.Screen
         name="(modals)/task"
         options={{
           headerShown: Platform.OS !== 'ios',
