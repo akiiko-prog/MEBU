@@ -57,7 +57,7 @@ export default function AurigaLoginScreen() {
                     if (tokens.refresh_token) {
                         await saveAurigaRefreshToken(tokens.refresh_token);
                     }
-                    await startSync(tokens.access_token);
+                    await startSync(tokens.access_token, saved.username);
                 } catch (e: any) {
                     console.error("Refresh token fetch failed:", e);
                     handleInvalidCredentials(e.message);
@@ -83,7 +83,7 @@ export default function AurigaLoginScreen() {
         }
     }
 
-    const startSync = async (accessToken: string) => {
+    const startSync = async (accessToken: string, loginUsername: string = username) => {
         if (isRefresh) {
             setIsSyncing(false);
             router.back();
@@ -116,7 +116,7 @@ export default function AurigaLoginScreen() {
                         if (aurigaService) {
                             useAccountStore.getState().updateServiceAuthData(aurigaService.id, {
                                 accessToken: accessToken,
-                                additionals: { type: 'auriga', cookies: cookiesString }
+                                additionals: { type: 'auriga', cookies: cookiesString, username: loginUsername }
                             });
                         }
                     }
@@ -185,7 +185,7 @@ export default function AurigaLoginScreen() {
                 if (aurigaService) {
                     useAccountStore.getState().updateServiceAuthData(aurigaService.id, {
                         accessToken: accessToken,
-                        additionals: { type: 'auriga', cookies: cookiesString }
+                        additionals: { type: 'auriga', cookies: cookiesString, username: loginUsername }
                     });
                 }
                 const currentLastUsed = useAccountStore.getState().lastUsedAccount;
@@ -206,7 +206,7 @@ export default function AurigaLoginScreen() {
                         serviceId: Services.MULTI,
                         auth: {
                             accessToken: accessToken,
-                            additionals: { type: 'auriga', cookies: cookiesString }
+                            additionals: { type: 'auriga', cookies: cookiesString, username: loginUsername }
                         },
                         createdAt: new Date().toISOString(),
                         updatedAt: new Date().toISOString(),
