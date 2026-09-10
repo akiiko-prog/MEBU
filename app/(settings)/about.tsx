@@ -31,7 +31,7 @@ export default function SettingsAbout() {
       login: "Arthaud",
       leading: <Avatar size={40} shape="square" initials={getInitials("Arthaud Delvau")} />,
       onPress: () => Linking.openURL("https://www.linkedin.com/in/arthaud-delvau-32205638b/")
-    }
+    },
     {
       title: "Elouan Gleyze",
       description: "Dev",
