@@ -29,7 +29,7 @@ export default function SettingsAbout() {
       title: "Arthaud Delvau",
       description: "Dev",
       login: "Arthaud",
-      leading: <Avatar size={40} shape="square" initials={getInitials("Arthaud Delvau")} imageUrl={Image.resolveAssetSource(require("@/assets/images/about/Arthaud_Delvau.jpeg")).uri} />,
+      leading: <Avatar size={40} shape="square" initials={getInitials("Arthaud Delvau")} />,
       onPress: () => Linking.openURL("https://www.linkedin.com/in/arthaud-delvau-32205638b/")
     }
   ]
