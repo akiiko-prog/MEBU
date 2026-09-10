@@ -48,6 +48,9 @@ export default function AurigaLoginScreen() {
                         additionals: {
                             ...multiService.auth.additionals,
                             hasStoredCredentials: 1,
+                            // Stored so we can check event-creation permissions
+                            // synchronously without touching SecureStore.
+                            username: username,
                         },
                     });
                 }

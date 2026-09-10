@@ -107,6 +107,8 @@
   "No_Course_Teacher": "Non Renseigné",
   "Event_DeleteEvent": "Supprimer l'événement",
   "Event_Confirm_DeleteEvent": "Es-tu sûr de vouloir supprimer cet événement ?",
+  "Event_NotAuthorized_Title": "Accès refusé",
+  "Event_NotAuthorized_Description": "Tu n'as pas la permission de créer un événement.",
   "Course_Separator_Lunch_Default": "Pause méridienne",
   "Course_Separator_Lunch_Alt_1": "Bon appétit !",
   "Course_Separator_Lunch_Alt_2": "Miam !",
