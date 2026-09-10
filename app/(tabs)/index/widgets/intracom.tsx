@@ -1,15 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import IntracomCard from '@/app/(tabs)/news/components/IntracomCard';
+import { fetchEvents, SchoolEvent } from '@/services/events';
 import Typography from '@/ui/components/Typography';
 
-import { useIntracomWidgetData } from '../hooks/useIntracomWidgetData';
+import EventCard from '@/app/(tabs)/news/components/EventCard';
 
 const HomeIntracomWidget = React.memo(() => {
-    const { event } = useIntracomWidgetData();
+    const [nextEvent, setNextEvent] = useState<SchoolEvent | null>(null);
 
-    if (!event) {
+    useEffect(() => {
+        fetchEvents().then((events) => {
+            const now = new Date();
+            const upcoming = events
+                .filter((e) => new Date(e.time_end) >= now)
+                .sort((a, b) => new Date(a.time_start).getTime() - new Date(b.time_start).getTime());
+            setNextEvent(upcoming[0] ?? null);
+        });
+    }, []);
+
+    if (!nextEvent) {
         return (
             <View style={styles.emptyContainer}>
                 <Typography variant="body2" style={{ opacity: 0.6 }}>
@@ -21,12 +31,9 @@ const HomeIntracomWidget = React.memo(() => {
 
     return (
         <View style={styles.container}>
-            <IntracomCard
-                event={event}
-                hideRegisterButton={false}
-                readOnly={false}
-                borderRadius={18}
-                style={{ marginBottom: 0 }}
+            <EventCard
+                event={nextEvent}
+                canEdit={false}
             />
         </View>
     );
