@@ -112,15 +112,6 @@ export function RootNavigator({ isAppReady }: { isAppReady: boolean }) {
         }}
       />
       <Stack.Screen
-        name="(modals)/news"
-        options={{
-          headerShown: true,
-          headerTitle: "",
-          headerLargeTitle: false,
-          presentation: "modal",
-        }}
-      />
-      <Stack.Screen
         name="(modals)/login-intracom"
         options={{
           headerShown: false,
