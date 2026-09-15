@@ -30,7 +30,6 @@ export interface NotificationPreferences {
   attendance?: boolean;
   courseCancel?: boolean;
   courseEdit?: boolean;
-  intracomEvents?: boolean;
 }
 
 export interface Personalization {
@@ -48,5 +47,4 @@ export interface Personalization {
   attendance?: "on" | "off";
   cancel?: "on" | "off";
   edit?: "on" | "off";
-  intracomEvents?: "on" | "off";
 }

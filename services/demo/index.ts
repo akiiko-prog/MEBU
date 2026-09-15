@@ -13,7 +13,6 @@ import {
   addPeriodGradesToDatabase,
 } from "@/database/useGrades";
 import { addSyllabusToDatabase } from "@/database/useSyllabus";
-import { saveIntracomEventsToDatabase, IntracomEventData } from "@/database/useIntracomEvents";
 import { Period, PeriodGrades, Subject, Grade } from "@/services/shared/grade";
 import { Syllabus } from "@/services/auriga/types";
 import { MMKV } from "react-native-mmkv";
@@ -39,12 +38,6 @@ function randInt(min: number, max: number): number {
 function daysAgo(n: number): Date {
   const d = new Date();
   d.setDate(d.getDate() - n);
-  return d;
-}
-
-function daysFromNow(n: number): Date {
-  const d = new Date();
-  d.setDate(d.getDate() + n);
   return d;
 }
 
@@ -203,54 +196,6 @@ function buildDemoSyllabus(): Syllabus[] {
   }));
 }
 
-// ─── Demo Intracom Events ─────────────────────────────────────────────────────
-
-const INTRACOM_TYPES = ["Conférence", "Hackathon", "Workshop", "Tournoi", "Afterwork", "Visite entreprise"];
-const INTRACOM_NAMES = [
-  "Conférence IA & Machine Learning",
-  "Hackathon 24h ESME",
-  "Workshop Cybersécurité",
-  "Tournoi de Ping-Pong Inter-Promo",
-  "Afterwork Networking Alumni",
-  "Visite Google France",
-  "Conférence Blockchain & Web3",
-  "Workshop Docker & Kubernetes",
-  "Hackathon Green Tech",
-  "Afterwork Jeux de Société",
-  "Conférence Entrepreneuriat",
-  "Workshop React Native",
-];
-const CAMPUS_SLUGS = ["paris-le-kremlin-bicetre", "paris-villejuif", "lyon", "rennes", "toulouse"];
-const CITIES = ["Le Kremlin-Bicêtre", "Villejuif", "Lyon", "Rennes", "Toulouse"];
-const ADDRESSES = [
-  "14 Rue Voltaire",
-  "9 Rue d'Ivry",
-  "156 Boulevard de la Croix-Rousse",
-  "2 Rue du Thabor",
-  "8 Esplanade Compans Caffarelli",
-];
-
-function buildDemoIntracomEvents(): IntracomEventData[] {
-  return INTRACOM_NAMES.map((name, i) => {
-    const campusIndex = i % CAMPUS_SLUGS.length;
-    const eventDate = i < 6 ? daysFromNow(i * 7 + 1) : daysAgo((i - 6) * 14 + 3);
-    return {
-      id: 10000 + i,
-      date: eventDate.toISOString().split("T")[0],
-      type: INTRACOM_TYPES[i % INTRACOM_TYPES.length],
-      name,
-      campusSlug: CAMPUS_SLUGS[campusIndex],
-      registeredStudents: randInt(10, 80),
-      nbNewStudents: randInt(2, 15),
-      maxStudents: randInt(80, 150),
-      state: i < 6 ? "OPEN" : "CLOSED",
-      address: ADDRESSES[campusIndex],
-      town: CITIES[campusIndex],
-      bonus: i % 3 === 0 ? rand(0.1, 0.5, 1) : undefined,
-    };
-  });
-}
-
 // ─── Demo Absences (EPITA Absence via MMKV) ───────────────────────────────────
 // We seed directly into MMKV because the attendance WatermelonDB table requires
 // schema-specific fields (levelId, semesterId) not present in SharedAttendance.
@@ -302,7 +247,7 @@ function seedDemoAbsencesMMKV(): void {
  * Seeds all demo data into the local databases.
  * Called after creating the demo account in `aurigaAuth.tsx`.
  */
-export async function seedDemoData(accountId: string): Promise<void> {
+export async function seedDemoData(): Promise<void> {
   // 1. Periods
   const periods = buildDemoPeriods();
   await addPeriodsToDatabase(periods);
@@ -317,11 +262,7 @@ export async function seedDemoData(accountId: string): Promise<void> {
   const syllabus = buildDemoSyllabus();
   await addSyllabusToDatabase(syllabus);
 
-  // 4. Intracom events
-  const events = buildDemoIntracomEvents();
-  await saveIntracomEventsToDatabase(events, accountId);
-
-  // 5. Absences — seeded via MMKV only (no WatermelonDB for EPITA absences)
+  // 4. Absences — seeded via MMKV only (no WatermelonDB for EPITA absences)
   seedDemoAbsencesMMKV();
 }
 

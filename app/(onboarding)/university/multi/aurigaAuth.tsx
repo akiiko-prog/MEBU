@@ -324,7 +324,7 @@ export default function AurigaLoginScreen() {
                 useFlagsStore.getState().setDemoMode(true);
 
                 setSyncStatus("Génération des données de démo...");
-                await seedDemoData(accountId);
+                await seedDemoData();
 
                 await initializeAccountManager();
 

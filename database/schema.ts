@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from "@nozbe/watermelondb";
 
 export const mySchema = appSchema({
-  version: 50,
+  version: 51,
   tables: [
     tableSchema({
       name: "course_notes",
@@ -10,74 +10,6 @@ export const mySchema = appSchema({
         { name: "content", type: "string" },
         { name: "createdAt", type: "number" },
         { name: "createdByAccount", type: "string" },
-      ],
-    }),
-    tableSchema({
-      name: "intracom_bonus",
-      columns: [
-        { name: "total", type: "number" },
-        { name: "updated_at", type: "number" },
-        { name: "student_id", type: "string" },
-        { name: "history", type: "string", isOptional: true },
-      ],
-    }),
-    tableSchema({
-      name: "intracom_profile",
-      columns: [
-        { name: "login", type: "string" },
-        { name: "student_id", type: "string" },
-        { name: "campus", type: "string" },
-        { name: "semester", type: "string" },
-        { name: "first_name", type: "string" },
-        { name: "last_name", type: "string" },
-        { name: "email", type: "string" },
-        { name: "data", type: "string" },
-      ],
-    }),
-    tableSchema({
-      name: "intracom_registered_events",
-      columns: [
-        { name: "eventId", type: "number", isIndexed: true },
-        { name: "date", type: "number" },
-        { name: "type", type: "string" },
-        { name: "name", type: "string" },
-        { name: "campusSlug", type: "string" },
-        { name: "registeredStudents", type: "number" },
-        { name: "nbNewStudents", type: "number" },
-        { name: "maxStudents", type: "number" },
-        { name: "state", type: "string" },
-        { name: "createdByAccount", type: "string", isIndexed: true },
-        { name: "address", type: "string", isOptional: true },
-        { name: "zipcode", type: "string", isOptional: true },
-        { name: "town", type: "string", isOptional: true },
-        { name: "latitude", type: "number", isOptional: true },
-        { name: "longitude", type: "number", isOptional: true },
-        { name: "slotTimes", type: "string", isOptional: true },
-        { name: "participants", type: "string", isOptional: true },
-        { name: "bonus", type: "number", isOptional: true },
-      ],
-    }),
-    tableSchema({
-      name: "intracom_events",
-      columns: [
-        { name: "eventId", type: "number", isIndexed: true },
-        { name: "date", type: "number" },
-        { name: "type", type: "string" },
-        { name: "name", type: "string" },
-        { name: "campusSlug", type: "string" },
-        { name: "registeredStudents", type: "number" },
-        { name: "nbNewStudents", type: "number" },
-        { name: "maxStudents", type: "number" },
-        { name: "state", type: "string" },
-        { name: "createdByAccount", type: "string", isIndexed: true },
-        { name: "address", type: "string", isOptional: true },
-        { name: "zipcode", type: "string", isOptional: true },
-        { name: "town", type: "string", isOptional: true },
-        { name: "latitude", type: "number", isOptional: true },
-        { name: "longitude", type: "number", isOptional: true },
-        { name: "slotTimes", type: "string", isOptional: true },
-        { name: "participants", type: "string", isOptional: true },
-        { name: "bonus", type: "number", isOptional: true },
       ],
     }),
     tableSchema({

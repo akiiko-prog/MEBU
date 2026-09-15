@@ -29,23 +29,3 @@ export function saveSeenGradeIds(ids: Set<string>): void {
 export function diffGradeIds(incoming: string[], seen: Set<string>): string[] {
     return incoming.filter((id) => !seen.has(id));
 }
-
-const INTRACOM_KEY = 'seen_intracom_event_ids';
-
-export function getSeenIntracomEventIds(): Set<number> {
-    const raw = storage.getString(INTRACOM_KEY);
-    if (!raw) return new Set();
-    try {
-        return new Set(JSON.parse(raw) as number[]);
-    } catch {
-        return new Set();
-    }
-}
-
-export function saveSeenIntracomEventIds(ids: Set<number>): void {
-    storage.set(INTRACOM_KEY, JSON.stringify(Array.from(ids)));
-}
-
-export function diffIntracomEventIds(incoming: number[], seen: Set<number>): number[] {
-    return incoming.filter((id) => !seen.has(id));
-}

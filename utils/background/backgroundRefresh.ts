@@ -1,27 +1,17 @@
 import * as BackgroundFetch from 'expo-background-fetch';
 import * as TaskManager from 'expo-task-manager';
 
-import { getDatabaseInstance } from '@/database/DatabaseProvider';
-import IntracomEvent from '@/database/models/IntracomEvent';
 import AbsencesAPI, { storage as absencesStorage } from '@/services/absences';
-import { syncIntracomData } from '@/services/syncService';
 import { useAccountStore } from '@/stores/account';
 import { Services } from '@/stores/account/types';
 import { getValidAttendanceToken } from '@/utils/attendanceAuth';
 import {
     diffGradeIds,
-    diffIntracomEventIds,
     getSeenGradeIds,
-    getSeenIntracomEventIds,
     saveSeenGradeIds,
-    saveSeenIntracomEventIds,
 } from '@/utils/grades/gradeCache';
 import { error, info } from '@/utils/logger/logger';
-import {
-    sendNewGradeNotification,
-    sendNewIntracomEventNotification,
-} from '@/utils/notification/alertNotification';
-import { Q } from '@nozbe/watermelondb';
+import { sendNewGradeNotification } from '@/utils/notification/alertNotification';
 
 const ATTENDANCE_LAST_SYNC_KEY = 'absences_last_bg_sync';
 const ATTENDANCE_SYNC_INTERVAL_MS = 24 * 60 * 60 * 1000;
@@ -142,43 +132,6 @@ export async function runBackgroundRefresh(): Promise<number> {
             }
         } catch (e) {
             error(`[BgRefresh] Attendance sync error: ${e}`);
-        }
-
-        // Intracom
-        try {
-            const db = getDatabaseInstance();
-
-            const eventsBefore = await db
-                .get<IntracomEvent>('intracom_events')
-                .query(Q.where('createdByAccount', accountId))
-                .fetch();
-            const idsBefore = new Set(eventsBefore.map((e) => e.eventId));
-            const seenEventIds = getSeenIntracomEventIds();
-
-            await syncIntracomData(accountId);
-
-            const eventsAfter = await db
-                .get<IntracomEvent>('intracom_events')
-                .query(Q.where('createdByAccount', accountId))
-                .fetch();
-
-            const idsAfter = eventsAfter.map((e) => e.eventId);
-            const brandNew = diffIntracomEventIds(
-                idsAfter.filter((id) => !idsBefore.has(id)),
-                seenEventIds
-            );
-            if (brandNew.length > 0) {
-                await sendNewIntracomEventNotification(brandNew.length);
-                didFetchNewData = true;
-            }
-
-            const updatedSeenEvents = getSeenIntracomEventIds();
-            idsAfter.forEach((id) => updatedSeenEvents.add(id));
-            saveSeenIntracomEventIds(updatedSeenEvents);
-
-            info(`[BgRefresh] Intracom synced. ${brandNew.length} new events.`);
-        } catch (e) {
-            error(`[BgRefresh] Intracom sync error: ${e}`);
         }
 
         info('[BgRefresh] Task complete');

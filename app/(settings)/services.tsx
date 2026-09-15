@@ -19,16 +19,13 @@ export default function SettingsServices() {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const [intracomConnected, setIntracomConnected] = useState(false);
   const [aurigaConnected, setAurigaConnected] = useState(false);
   const [attendanceConnected, setAttendanceConnected] = useState(false);
 
   const checkConnections = useCallback(async () => {
-    const isIntracom = await hasCredentials(Services.INTRACOM);
     const isAuriga = await hasCredentials(Services.AURIGA);
     const isAttendance = await hasCredentials(Services.ATTENDANCE);
 
-    setIntracomConnected(isIntracom);
     setAurigaConnected(isAuriga);
     setAttendanceConnected(isAttendance);
   }, []);
@@ -38,35 +35,6 @@ export default function SettingsServices() {
       checkConnections();
     }, [checkConnections])
   );
-
-  const handleDisconnectIntracom = async () => {
-    try {
-      await removeCredentials(Services.INTRACOM);
-
-      const account = accountStore.accounts.find(a => a.services.some(s => s.serviceId === Services.INTRACOM && s.auth.additionals?.hasStoredCredentials === 1));
-
-
-      if (account) {
-        try {
-          const { clearIntracomData } = await import('@/database/cleanup');
-          await clearIntracomData(account.id);
-
-          accountStore.setServiceCredentials(Services.INTRACOM, false, account.id);
-
-        } catch (e) {
-          console.error("Error clearing Intracom data:", e);
-        }
-      } else {
-        accountStore.setServiceCredentials(Services.INTRACOM, false);
-      }
-
-      Alert.alert(t("Settings_Services_Alert_Success"), t("Settings_Services_Alert_Disconnected"));
-      await checkConnections();
-    } catch (error) {
-      console.error("Failed to disconnect Intracom", error);
-      Alert.alert(t("Settings_Services_Alert_Error"), t("Settings_Services_Alert_Failed_Disconnect"));
-    }
-  };
 
   const handleDisconnectAuriga = async () => {
     try {
@@ -145,33 +113,6 @@ export default function SettingsServices() {
       style={{ width: '100%', height: '100%' }}
     >
       <List>
-        <Item
-          onPress={() => {
-            console.log("[Services] Intracom Item Pressed. Connected:", intracomConnected);
-            if (intracomConnected) {
-              Alert.alert(
-                t("Settings_Services_Modal_Title_IntracomDisonnection"),
-                t("Settings_Services_Modal_Description_Disconnection"),
-                [
-                  { text: t("Settings_Services_CancelButton"), style: "cancel" },
-                  { text: t("Settings_Services_DisconnectButton"), style: "destructive", onPress: handleDisconnectIntracom }
-                ]
-              );
-            } else {
-              router.push('/(modals)/login-intracom');
-            }
-          }}
-        >
-          <Stack direction="horizontal" vAlign="center" gap={12} style={{ flex: 1 }}>
-            {/* Use a better icon or image for Intracom if available */}
-            <Typography variant="title">Intracom</Typography>
-            <View style={{ flex: 1 }} />
-            <Typography variant="body1" color="secondary">
-              {intracomConnected ? t("Settings_Services_Connected") : t("Settings_Services_NotConnected")}
-            </Typography>
-          </Stack>
-        </Item>
-
         <Item
           onPress={() => {
             if (aurigaConnected) {

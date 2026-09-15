@@ -87,7 +87,7 @@ export class AccountManager {
     let refreshedAtLeastOne = false;
 
     // Clean up legacy/phantom services with unknown serviceIds
-    const validServiceIds = [Services.MULTI, Services.IZLY, Services.INTRACOM, Services.ATTENDANCE];
+    const validServiceIds = [Services.MULTI, Services.IZLY, Services.ATTENDANCE];
     const servicesToRemove: string[] = [];
     for (const service of this.account.services) {
       if (!validServiceIds.includes(service.serviceId)) {
@@ -671,12 +671,6 @@ export class AccountManager {
       // eslint-disable-next-line @typescript-eslint/no-require-imports
       const module = require("@/services/izly/index");
       return new module.Izly(service.id);
-    }
-
-    if (service.serviceId === Services.INTRACOM) {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const module = require("@/services/intracom/index");
-      return new module.Intracom(service.id);
     }
 
     if (service.serviceId === Services.ATTENDANCE) {

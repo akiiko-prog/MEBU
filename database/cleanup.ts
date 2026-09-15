@@ -8,9 +8,6 @@ import CanteenHistoryItem from "./models/CanteenHistory";
 import CanteenMenu from "./models/CanteenMenu";
 import { Grade, Period, PeriodGrades } from "./models/Grades";
 import Homework from "./models/Homework";
-import IntracomBonus from "./models/IntracomBonus";
-import IntracomEvent from "./models/IntracomEvent";
-import IntracomRegisteredEvent from "./models/IntracomRegisteredEvent";
 import Subject from "./models/Subject";
 import Course from "./models/Timetable";
 import { safeWrite } from "./utils/safeTransaction";
@@ -94,25 +91,4 @@ export async function clearAttendanceData(accountId: string) {
         }
         info(`Attendance data cleaned.`);
     }, 10000, "clearAttendanceData");
-}
-
-/**
- * Clears Intracom data.
- */
-export async function clearIntracomData(accountId: string) {
-    const db = getDatabaseInstance();
-    await safeWrite(db, async () => {
-        info(`Cleaning Intracom data for account ${accountId}...`);
-
-        const events = await db.get<IntracomEvent>("intracom_events").query(Q.where("createdByAccount", accountId)).fetch();
-        for (const e of events) { await e.markAsDeleted(); await e.destroyPermanently(); }
-
-        const regEvents = await db.get<IntracomRegisteredEvent>("intracom_registered_events").query(Q.where("createdByAccount", accountId)).fetch();
-        for (const re of regEvents) { await re.markAsDeleted(); await re.destroyPermanently(); }
-
-        const bonuses = await db.get<IntracomBonus>("intracom_bonus").query().fetch();
-        for (const b of bonuses) { await b.markAsDeleted(); await b.destroyPermanently(); }
-
-        info(`Intracom data cleaned.`);
-    });
 }

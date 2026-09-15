@@ -1,7 +1,7 @@
 import { Papicons } from "@getpapillon/papicons";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { useTheme } from "@react-navigation/native";
-import { Ban, CalendarRange, Ghost, GraduationCap, Pencil } from "lucide-react-native";
+import { Ban, Ghost, GraduationCap, Pencil } from "lucide-react-native";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Platform, ScrollView } from "react-native";
@@ -31,13 +31,11 @@ const NotificationSettings = () => {
   const [selectedAttendance, setSelectedAttendance] = React.useState<"on" | "off">(settingsStore.attendance || "on");
   const [selectedCancel, setSelectedCancel] = React.useState<"on" | "off">(settingsStore.cancel || "on");
   const [selectedEdit, setSelectedEdit] = React.useState<"on" | "off">(settingsStore.edit || "on");
-  const [selectedEvents, setSelectedEvents] = React.useState<"on" | "off">(settingsStore.intracomEvents || "on");
 
   useEffect(() => { mutateProperty("personalization", { grade: selectedGrades }); }, [selectedGrades]);
   useEffect(() => { mutateProperty("personalization", { attendance: selectedAttendance }); }, [selectedAttendance]);
   useEffect(() => { mutateProperty("personalization", { cancel: selectedCancel }); }, [selectedCancel]);
   useEffect(() => { mutateProperty("personalization", { edit: selectedEdit }); }, [selectedEdit]);
-  useEffect(() => { mutateProperty("personalization", { intracomEvents: selectedEvents }); }, [selectedEvents]);
 
   const items: { icon: React.ReactNode; title: string; description: string; selected: "on" | "off"; setSelected: (v: "on" | "off") => void }[] = [
     {
@@ -67,13 +65,6 @@ const NotificationSettings = () => {
       description: t("Notif_CourseEdit_Description"),
       selected: selectedEdit,
       setSelected: setSelectedEdit,
-    },
-    {
-      icon: <CalendarRange width={22} height={22} stroke="#818181" />,
-      title: t("Notif_IntracomEvents_Title"),
-      description: t("Notif_IntracomEvents_Description"),
-      selected: selectedEvents,
-      setSelected: setSelectedEvents,
     },
   ];
 

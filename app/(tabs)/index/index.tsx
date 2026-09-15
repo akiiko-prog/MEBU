@@ -14,7 +14,7 @@ import HomeTopBar from './atoms/HomeTopBar';
 import Wallpaper from './atoms/Wallpaper';
 import HomeWidget, { HomeWidgetItem } from './components/HomeWidget';
 import { useHomeData } from './hooks/useHomeData';
-import HomeIntracomWidget from './widgets/intracom';
+import HomeNextEventWidget from './widgets/nextEvent';
 import HomeTimeTableWidget from './widgets/timetable';
 import HomeLinksWidget from './widgets/links';
 
@@ -28,7 +28,7 @@ const HomeScreen = () => {
   useHomeData();
 
   const renderTimeTable = useCallback(() => <HomeTimeTableWidget />, []);
-  const renderIntracom = useCallback(() => <HomeIntracomWidget />, []);
+  const renderNextEvent = useCallback(() => <HomeNextEventWidget />, []);
   const renderLinks = useCallback(() => <HomeLinksWidget />, []);
 
   const data: HomeWidgetItem[] = useMemo(() => [
@@ -42,7 +42,7 @@ const HomeScreen = () => {
       icon: <Papicons name={"newspaper"} />,
       title: t("Home_Widget_NextEvent"),
       redirect: "(tabs)/news",
-      render: renderIntracom
+      render: renderNextEvent
     },
     {
       icon: <Papicons name={"link"} />,
@@ -50,7 +50,7 @@ const HomeScreen = () => {
       redirect: "(modals)/linksList",
       render: renderLinks
     },
-  ], [renderTimeTable, renderIntracom, renderLinks]);
+  ], [renderTimeTable, renderNextEvent, renderLinks]);
 
   useEffect(() => {
     if (accounts.length === 0) {
