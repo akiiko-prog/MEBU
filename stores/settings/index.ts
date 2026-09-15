@@ -20,7 +20,6 @@ const defaultPersonalization: Personalization = {
   attendance: "on",
   cancel: "on",
   edit: "on",
-  intracomEvents: "on",
 };
 
 export const useSettingsStore = create<SettingsStorage>()(

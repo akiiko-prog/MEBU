@@ -355,8 +355,7 @@ export default function Devmode() {
               const { MMKV } = require('react-native-mmkv');
               const storage = new MMKV();
               storage.delete('cachedGradeIds');
-              storage.delete('cachedIntracomIds');
-              Alert.alert("Cache vidé", "Les IDs de notes et événements vus ont été supprimés.\nToutes les notes existantes seront traitées comme nouvelles au prochain refresh.");
+              Alert.alert("Cache vidé", "Les IDs de notes vus ont été supprimés.\nToutes les notes existantes seront traitées comme nouvelles au prochain refresh.");
             } catch (e) {
               Alert.alert("Erreur", String(e));
             }
@@ -387,7 +386,6 @@ export default function Devmode() {
               const { MMKV } = require('react-native-mmkv');
               const storage = new MMKV();
               storage.delete('cachedGradeIds');
-              storage.delete('cachedIntracomIds');
               // Step 2: Run background refresh directly
               const { runBackgroundRefresh } = await import('@/utils/background/backgroundRefresh');
               const result = await runBackgroundRefresh();

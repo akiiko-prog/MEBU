@@ -7,7 +7,7 @@ import { InfoIcon } from "lucide-react-native";
 import React, { useCallback, useMemo } from "react";
 import { Alert, Image, View } from "react-native";
 
-import { clearAttendanceData, clearAurigaData, clearIntracomData } from "@/database/cleanup";
+import { clearAttendanceData, clearAurigaData } from "@/database/cleanup";
 import AbsencesAPI from "@/services/absences";
 import { useAccountStore } from "@/stores/account";
 import { useSettingsStore } from "@/stores/settings";
@@ -60,7 +60,6 @@ export default function SettingsIndex() {
     if (account) {
       try {
         await Promise.all([
-          removeCredentials(Services.INTRACOM),
           removeCredentials(Services.AURIGA),
           removeCredentials(Services.ATTENDANCE),
         ]);

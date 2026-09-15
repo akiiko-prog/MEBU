@@ -5,7 +5,6 @@ import { StatusBar, useColorScheme } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { AurigaRefreshProvider } from "@/components/AurigaRefreshProvider";
-import { IntracomRefreshProvider } from "@/components/IntracomRefreshProvider";
 import { DatabaseProvider } from "@/database/DatabaseProvider";
 import { useSettingsStore } from '@/stores/settings';
 import { AlertProvider } from '@/ui/components/AlertProvider';
@@ -62,9 +61,7 @@ export function AppProviders({ children }: AppProvidersProps) {
         <ThemeProvider value={theme}>
           <AlertProvider>
             <AurigaRefreshProvider>
-              <IntracomRefreshProvider>
-                {children}
-              </IntracomRefreshProvider>
+              {children}
             </AurigaRefreshProvider>
           </AlertProvider>
         </ThemeProvider>

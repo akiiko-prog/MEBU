@@ -2,7 +2,7 @@ import * as Notifications from 'expo-notifications';
 
 import { useSettingsStore } from '@/stores/settings';
 
-function isEnabled(key: 'grade' | 'attendance' | 'cancel' | 'edit' | 'intracomEvents'): boolean {
+function isEnabled(key: 'grade' | 'attendance' | 'cancel' | 'edit'): boolean {
     return useSettingsStore.getState().personalization[key] !== "off";
 }
 
@@ -18,19 +18,6 @@ export async function sendNewGradeNotification(subject: string, score: string): 
             body: `${subject} : ${roundedScore}`,
             sound: true,
             data: { type: 'new_grade' },
-        },
-        trigger: null,
-    });
-}
-
-export async function sendNewIntracomEventNotification(newEventNumber: number): Promise<void> {
-    if (!isEnabled('intracomEvents')) return;
-    await Notifications.scheduleNotificationAsync({
-        content: {
-            title: `📅 Nouve${newEventNumber > 1 ? 'aux' : 'l'} événement${newEventNumber > 1 ? 's' : ''} Intracom`,
-            body: `${newEventNumber} nouveau${newEventNumber > 1 ? 'x' : ''} événement${newEventNumber > 1 ? 's' : ''} sont disponibles.`,
-            sound: true,
-            data: { type: 'new_intracom_event' },
         },
         trigger: null,
     });

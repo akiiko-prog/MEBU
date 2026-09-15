@@ -112,23 +112,6 @@ export function RootNavigator({ isAppReady }: { isAppReady: boolean }) {
         }}
       />
       <Stack.Screen
-        name="(modals)/login-intracom"
-        options={{
-          headerShown: false,
-          presentation: "modal",
-        }}
-      />
-      <Stack.Screen
-        name="(modals)/intracom-bonus-history"
-        options={{
-          headerShown: true, // Matching attendance.tsx
-          headerTitle: "Historique bonus",
-          headerLargeTitle: true, // Matching attendance.tsx
-          headerTransparent: runsIOS26,
-          presentation: "modal",
-        }}
-      />
-      <Stack.Screen
         name="(modals)/course"
         options={{
           headerShown: Platform.OS !== 'ios',

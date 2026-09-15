@@ -6,7 +6,7 @@ import Typography from '@/ui/components/Typography';
 
 import EventCard from '@/app/(tabs)/news/components/EventCard';
 
-const HomeIntracomWidget = React.memo(() => {
+const HomeNextEventWidget = React.memo(() => {
     const [nextEvent, setNextEvent] = useState<SchoolEvent | null>(null);
 
     useEffect(() => {
@@ -52,4 +52,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default HomeIntracomWidget;
+export default HomeNextEventWidget;

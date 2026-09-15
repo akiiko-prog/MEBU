@@ -1,7 +1,18 @@
-import { addColumns, createTable, schemaMigrations } from '@nozbe/watermelondb/Schema/migrations';
+import { addColumns, createTable, schemaMigrations, unsafeExecuteSql } from '@nozbe/watermelondb/Schema/migrations';
 
 export default schemaMigrations({
     migrations: [
+        {
+            // ESME n'a pas de système Intracom (spécifique EPITA) : ces tables,
+            // inutilisées depuis le retrait de la fonctionnalité, sont supprimées.
+            toVersion: 51,
+            steps: [
+                unsafeExecuteSql('DROP TABLE IF EXISTS intracom_bonus;'),
+                unsafeExecuteSql('DROP TABLE IF EXISTS intracom_profile;'),
+                unsafeExecuteSql('DROP TABLE IF EXISTS intracom_registered_events;'),
+                unsafeExecuteSql('DROP TABLE IF EXISTS intracom_events;'),
+            ],
+        },
         {
             toVersion: 50,
             steps: [

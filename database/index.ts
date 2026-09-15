@@ -8,10 +8,6 @@ import Event from '@/database/models/Event';
 import { Grade, Period, PeriodGrades } from '@/database/models/Grades';
 import Homework from "@/database/models/Homework";
 import Ical from '@/database/models/Ical';
-import IntracomBonus from '@/database/models/IntracomBonus';
-import IntracomEvent from '@/database/models/IntracomEvent';
-import IntracomProfile from '@/database/models/IntracomProfile';
-import IntracomRegisteredEvent from '@/database/models/IntracomRegisteredEvent';
 import News from '@/database/models/News';
 import Subject from '@/database/models/Subject';
 import Course from '@/database/models/Timetable';
@@ -55,10 +51,6 @@ export const database = new Database({
     Kid,
     Balance,
     CanteenHistoryItem,
-    IntracomEvent,
-    IntracomRegisteredEvent,
-    IntracomBonus,
-    IntracomProfile,
     SyllabusModel,
     CourseNote,
   ],

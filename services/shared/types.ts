@@ -1,7 +1,6 @@
 import { Multi as MultiClient } from "esup-multi.js";
 import { Identification } from "ezly";
 
-import { Intracom } from "@/services/intracom";
 import { Attendance } from "@/services/shared/attendance";
 import {
   Booking,
@@ -43,7 +42,7 @@ export interface SchoolServicePlugin {
   refreshAccount: (
     credentials: Auth,
     forceRefresh?: boolean
-  ) => Promise<Multi | Izly | Intracom | any>;
+  ) => Promise<Multi | Izly | any>;
   getKids?: () => Kid[];
   getCanteenKind?: () => CanteenKind;
   getHomeworks?: (weekNumber: number) => Promise<Homework[]>;

@@ -3,7 +3,7 @@
  *
  * TO TRANSFER PERMISSIONS TO SOMEONE ELSE:
  * Just add/remove their school login (the same identifier used to log
- * into Auriga/Intracom, e.g. "p.nom@esme.fr") from the list below.
+ * into Auriga, e.g. "p.nom@esme.fr") from the list below.
  * No other file needs to change.
  */
 
@@ -23,7 +23,7 @@ function normalize(identifier: string): string {
 /**
  * Returns true if the given login/email is allowed to create events.
  * Pass in whatever identifier the account uses to authenticate
- * (e.g. the Auriga/Intracom username or email).
+ * (e.g. the Auriga username or email).
  */
 export function canCreateEvent(identifier?: string | null): boolean {
   if (!identifier) {
