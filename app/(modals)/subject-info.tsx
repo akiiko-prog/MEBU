@@ -139,7 +139,7 @@ const SubjectInfo = () => {
                     <Papicons name={"Warning"} />
                   </Icon>
                   <Typography color="secondary" style={{ textAlign: 'center' }}>
-                    EPITA n'a pas encore renseigné les coefficients dans Auriga. Les moyennes d'UE sont donc indisponibles pour le moment.
+                    ESME n'a pas encore renseigné les coefficients dans Auriga. Les moyennes d'UE sont donc indisponibles pour le moment.
                   </Typography>
                 </Stack>
               ) : (

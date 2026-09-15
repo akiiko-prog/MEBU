@@ -208,7 +208,7 @@ function buildDemoSyllabus(): Syllabus[] {
 const INTRACOM_TYPES = ["Conférence", "Hackathon", "Workshop", "Tournoi", "Afterwork", "Visite entreprise"];
 const INTRACOM_NAMES = [
   "Conférence IA & Machine Learning",
-  "Hackathon 24h EPITA",
+  "Hackathon 24h ESME",
   "Workshop Cybersécurité",
   "Tournoi de Ping-Pong Inter-Promo",
   "Afterwork Networking Alumni",
