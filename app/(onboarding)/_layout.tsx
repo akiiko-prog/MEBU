@@ -33,14 +33,6 @@ export default function OnboardingLayout() {
                     options={{ ...newScreenOptions }}
                     initialParams={{ accountId: "" }}
                 />
-                <Stack.Screen
-                    name="university/method"
-                    options={{ ...newScreenOptions }}
-                />
-                <Stack.Screen
-                    name="university/multi/credentials"
-                    options={{ ...newScreenOptions }}
-                />
             </Stack>
         </View>
     );
