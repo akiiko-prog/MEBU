@@ -3,18 +3,18 @@
  *
  * TO TRANSFER PERMISSIONS TO SOMEONE ELSE:
  * Just add/remove their school login (the same identifier used to log
- * into Auriga/Intracom, e.g. "p.nom@epita.fr") from the list below.
+ * into Auriga/Intracom, e.g. "p.nom@esme.fr") from the list below.
  * No other file needs to change.
  */
 
 export const EVENT_CREATOR_WHITELIST: string[] = [
   "arthaud.delvau@esme.fr",
-  // "a.autre@epita.fr",
+  // "a.autre@esme.fr",
 ];
 
 /**
  * Normalizes an identifier before comparison (case/whitespace-insensitive)
- * so "P.Nom@EPITA.fr " and "p.nom@epita.fr" are treated as the same account.
+ * so "P.Nom@ESME.fr " and "p.nom@esme.fr" are treated as the same account.
  */
 function normalize(identifier: string): string {
   return identifier.trim().toLowerCase();

@@ -81,7 +81,7 @@ export default function AurigaLoginScreen() {
             password={password}
             setPassword={setPassword}
             onLogin={handleLogin}
-            usernamePlaceholder="Login (ex: p.n@epita.fr)"
+            usernamePlaceholder="Login (ex: p.n@esme.fr)"
         />
     );
 }

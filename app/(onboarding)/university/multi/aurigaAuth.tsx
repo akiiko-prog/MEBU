@@ -149,7 +149,7 @@ export default function AurigaLoginScreen() {
 
             setSyncStatus(t("Auriga_Sync_Success_Informations"));
             let studentFirstName = "Etudiant";
-            let studentLastName = "EPITA";
+            let studentLastName = "ESME";
 
             try {
                 const meResponse = await fetch("https://my.esme.fr/api/me", {
@@ -162,7 +162,7 @@ export default function AurigaLoginScreen() {
                 if (meResponse.ok) {
                     const meData = await meResponse.json();
                     studentFirstName = meData.person?.currentFirstName || "Etudiant";
-                    studentLastName = meData.person?.currentLastName || "EPITA";
+                    studentLastName = meData.person?.currentLastName || "ESME";
                 }
             } catch (e) {
                 console.warn("Could not fetch /api/me:", e);
@@ -200,7 +200,7 @@ export default function AurigaLoginScreen() {
                     id: accountId,
                     firstName: studentFirstName,
                     lastName: studentLastName,
-                    schoolName: "EPITA",
+                    schoolName: "ESME",
                     services: [{
                         id: serviceId,
                         serviceId: Services.MULTI,
@@ -301,7 +301,7 @@ export default function AurigaLoginScreen() {
                         id: accountId,
                         firstName: "Alex",
                         lastName: "DEMO",
-                        schoolName: "EPITA",
+                        schoolName: "ESME",
                         services: [
                             {
                                 id: Crypto.randomUUID(),
@@ -424,7 +424,7 @@ export default function AurigaLoginScreen() {
                     gap={16}
                 >
                     <OnboardingInput
-                        placeholder="Login (ex: p.n@epita.fr)"
+                        placeholder="Login (ex: p.n@esme.fr)"
                         text={username}
                         setText={setUsername}
                         icon="User"
