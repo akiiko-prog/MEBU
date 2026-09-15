@@ -3,7 +3,7 @@ import { useFocusEffect, useTheme } from '@react-navigation/native'
 import { useRouter } from 'expo-router'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next';
-import { FlatList, View } from 'react-native'
+import { Alert, FlatList, View } from 'react-native'
 import { useBottomTabBarHeight } from 'react-native-bottom-tabs'
 import { RefreshControl } from 'react-native-gesture-handler'
 import { LayoutAnimationConfig } from 'react-native-reanimated'
@@ -22,7 +22,6 @@ import TabHeader from '@/ui/components/TabHeader'
 import TabHeaderTitle from '@/ui/components/TabHeaderTitle'
 import Typography from '@/ui/components/Typography'
 import { PapillonAppearIn, PapillonAppearOut } from '@/ui/utils/Transition'
-import { useAlert } from '@/ui/components/AlertProvider';
 
 import EventCard from './components/EventCard';
 
@@ -32,7 +31,6 @@ const NewsView = () => {
   const colors = theme.colors
   const insets = useSafeAreaInsets()
   const router = useRouter()
-  const alert = useAlert();
 
   const [headerHeight, setHeaderHeight] = useState(0)
   const bottomTabBarHeight = useBottomTabBarHeight();
@@ -79,15 +77,19 @@ const NewsView = () => {
   }, [events, searchText]);
 
   const handleDelete = useCallback((id: string) => {
-    alert.showAlert({
-      title: "Supprimer l'événement ?",
-      description: "Cette action est irréversible.",
-      icon: "Trash",
-      color: "#D60000",
-      // @ts-ignore - selon le composant AlertProvider, adapte si besoin de boutons de confirmation
-    });
-    deleteEvent(id).then(() => loadEvents());
-  }, [loadEvents, alert]);
+    Alert.alert(
+      t("Event_DeleteEvent"),
+      t("Event_Confirm_DeleteEvent"),
+      [
+        { text: t("Context_Cancel"), style: "cancel" },
+        {
+          text: t("Event_DeleteEvent"),
+          style: "destructive",
+          onPress: () => { deleteEvent(id).then(() => loadEvents()); },
+        },
+      ]
+    );
+  }, [loadEvents, t]);
 
   return (
     <>
