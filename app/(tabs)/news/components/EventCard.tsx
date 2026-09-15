@@ -37,12 +37,12 @@ const EventCard: React.FC<EventCardProps> = ({ event, canEdit, onEdit, onDelete 
                     <Stack direction="horizontal" gap={8}>
                         <AnimatedPressable onPress={onEdit}>
                             <Icon size={20} opacity={0.6}>
-                                <Papicons name="Pencil" />
+                                <Papicons name="Pen" />
                             </Icon>
                         </AnimatedPressable>
                         <AnimatedPressable onPress={onDelete}>
                             <Icon size={20} opacity={0.6}>
-                                <Papicons name="Trash" />
+                                <Papicons name="Cross" />
                             </Icon>
                         </AnimatedPressable>
                     </Stack>
