@@ -6,7 +6,7 @@ import { Dimensions, StyleSheet, Text } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import LottieView from "lottie-react-native";
 import { Audio } from "expo-av";
-import { useHotUpdaterStore } from "@hot-updater/react-native";
+import { useUpdates } from "expo-updates";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -22,9 +22,10 @@ const FakeSplash = ({ isAppReady }: { isAppReady: boolean }) => {
   const insets = useSafeAreaInsets();
   const [dismissed, setDismissed] = useState(false);
   const translateX = useSharedValue(0);
-  const otaProgress = useHotUpdaterStore((s) => s.progress);
-  const otaDownloaded = useHotUpdaterStore((s) => s.isUpdateDownloaded);
-  const otaActive = otaProgress > 0 && otaProgress < 1;
+  const { isDownloading, downloadProgress, isUpdatePending } = useUpdates();
+  const otaProgress = downloadProgress ?? 0;
+  const otaDownloaded = isUpdatePending;
+  const otaActive = isDownloading;
   const otaLabel = otaDownloaded
     ? "Mise à jour prête"
     : otaActive
