@@ -159,16 +159,16 @@ module.exports = {
           frequentUpdates: true,
           groupIdentifier: "group.fr.akiiko.mebu"
         }
-      ],
-      [
-        "@hot-updater/react-native",
-        {
-          channel: "production"
-        }
       ]
     ],
     experiments: {
       typedRoutes: true,
+    },
+    updates: {
+      url: "https://u.expo.dev/689bad12-c032-47e6-b4d5-d53cf1939bb6",
+    },
+    runtimeVersion: {
+      policy: "appVersion",
     },
   },
 };

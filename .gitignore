@@ -61,6 +61,4 @@ yarn.lock
 
 secrets.json
 keys/
-# hot-updater
-.hot-updater/output
 *.sh
