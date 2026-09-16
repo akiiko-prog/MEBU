@@ -186,7 +186,7 @@ export default function ConsentScreen() {
               {t("Consent_Arg3")}
             </Typography>
           </Stack>
-          <Typography onPress={() => Linking.openURL("https://docs.papillon.bzh/privacy-policy")} variant="caption" color={accent} align="center" style={{ textDecorationLine: "underline", marginTop: 10 }}>
+          <Typography onPress={() => Linking.openURL("https://claude.ai/artifact/V9HNqW4dosK3Si9wyXynkv")} variant="caption" color={accent} align="center" style={{ textDecorationLine: "underline", marginTop: 10 }}>
             {t("Consent_PrivacyPolicy")}
           </Typography>
         </Stack>
