@@ -1,14 +1,11 @@
 import { Papicons } from '@getpapillon/papicons';
 import { useRoute, useTheme } from "@react-navigation/native";
-import { useRouter } from "expo-router";
 import { t } from "i18next";
 import React from "react";
 import { View } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 
 import ModalOverhead, { ModalOverHeadScore } from '@/components/ModalOverhead';
-import { extractSubjectCode, storage } from "@/services/auriga";
-import { Syllabus } from '@/services/auriga/types';
 import { Grade as SharedGrade } from "@/services/shared/grade";
 import ContainedNumber from "@/ui/components/ContainedNumber";
 import Icon from "@/ui/components/Icon";
@@ -31,7 +28,6 @@ interface GradesModalProps {
 }
 
 export default function GradesModal() {
-  const router = useRouter();
   const { params } = useRoute();
   const theme = useTheme();
   const colors = theme.colors;
@@ -105,10 +101,9 @@ export default function GradesModal() {
               style={{ marginTop: 8, alignItems: 'stretch' }}
             >
               <Stack
-                width={"50%"}
+                width={"100%"}
                 vAlign="center"
                 hAlign="center"
-                style={{ borderRightWidth: 1, borderRightColor: colors.border }}
                 padding={12}
               >
                 <Icon papicon opacity={0.5}>
@@ -120,45 +115,6 @@ export default function GradesModal() {
                 <ContainedNumber color={adjust(subjectInfo.color, theme.dark ? 0.3 : -0.3)}>
                   x{(grade.coefficient ?? 1).toFixed(2)}
                 </ContainedNumber>
-              </Stack>
-              <Stack
-                width={"50%"}
-                vAlign="center"
-                hAlign="center"
-                padding={12}
-                style={{ alignItems: 'center', justifyContent: 'center' }}
-                onPress={() => {
-                  const data = storage.getString("auriga_syllabus");
-                  const allSyllabus: Syllabus[] = data ? JSON.parse(data) : [];
-                  const nameToUse = subjectInfo.originalName || subjectInfo.name || grade.subjectName;
-                  const subjectCode = extractSubjectCode(nameToUse);
-
-                  const foundSyllabus = allSyllabus.find(s => {
-                    const syllabusCode = extractSubjectCode(s.name);
-                    if (subjectCode.startsWith(syllabusCode + "_") || subjectCode === syllabusCode) { return true; }
-
-                    if (s.caption?.name === nameToUse || s.caption?.name === subjectInfo.name) { return true; }
-
-                    if (s.name === nameToUse) { return true; }
-
-                    return false;
-                  });
-                  if (foundSyllabus) {
-                    router.push({
-                      pathname: '/(modals)/syllabus',
-                      params: { syllabusData: JSON.stringify(foundSyllabus) },
-                    });
-                  } else {
-                    console.log("No syllabus found for", subjectInfo.originalName);
-                  }
-                }}
-              >
-                <Icon papicon opacity={0.5}>
-                  <Papicons name={"ArrowRightUp"} />
-                </Icon>
-                <Typography color="secondary" style={{ textAlign: 'center' }}>
-                  {t("Grades_Look_Syllabus")}
-                </Typography>
               </Stack>
             </Stack>
           </View>
