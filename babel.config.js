@@ -4,7 +4,6 @@ module.exports = function (api) {
     presets: ['babel-preset-expo'],
     plugins: [
       'react-native-worklets/plugin',
-      'hot-updater/babel-plugin',
     ],
   };
 };
