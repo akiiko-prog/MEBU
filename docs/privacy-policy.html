@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Politique de confidentialité — MEBU</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600&family=Public+Sans:wght@500;600;700&display=swap">
+<style>
+  :root{
+    --bg:#ffffff;
+    --surface:#f4f6fb;
+    --text:#171b22;
+    --text-secondary:#4c5566;
+    --border:#e2e6ee;
+    --accent:#0060d6;
+    --accent-soft:#e8f0fe;
+    --accent-text:#00408f;
+    --good:#0a7d4f;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0b0e14;
+      --surface:#131826;
+      --text:#e8ecf5;
+      --text-secondary:#9aa4b8;
+      --border:#232a3a;
+      --accent:#5b93ff;
+      --accent-soft:#152341;
+      --accent-text:#9bc0ff;
+      --good:#3ecf8e;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Literata","Iowan Old Style",Georgia,serif;
+    line-height:1.65;
+  }
+  img{ max-width:100%; }
+  .wrap{
+    max-width:700px;
+    margin:0 auto;
+    padding-inline:20px;
+    padding-block:0 64px;
+  }
+  h1,h2,h3,.eyebrow,.nav-list a,.badge,.meta,button{
+    font-family:"Public Sans","Segoe UI",system-ui,sans-serif;
+  }
+  h1{ text-wrap:balance; }
+
+  header.top{
+    padding-block:36px 24px;
+    border-bottom:1px solid var(--border);
+    margin-bottom:32px;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .brand-mark{
+    width:34px;height:34px;border-radius:9px;
+    background:var(--accent);
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;font-weight:700;font-size:15px;
+    flex-shrink:0;
+  }
+  .brand-name{ font-weight:700; font-size:15px; letter-spacing:.01em; }
+  .eyebrow{
+    text-transform:uppercase;
+    letter-spacing:.09em;
+    font-size:12px;
+    font-weight:600;
+    color:var(--accent-text);
+    margin:0 0 8px;
+  }
+  h1{
+    font-size:clamp(28px,5vw,38px);
+    font-weight:700;
+    margin:0 0 10px;
+    line-height:1.15;
+  }
+  .meta{
+    font-size:13px;
+    color:var(--text-secondary);
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 16px;
+  }
+
+  .intro{
+    font-size:17px;
+    color:var(--text-secondary);
+    margin-bottom:0;
+  }
+  .intro strong{ color:var(--text); }
+
+  nav.toc{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:18px 20px;
+    margin:28px 0 40px;
+  }
+  nav.toc .eyebrow{ margin-bottom:10px; }
+  .nav-list{
+    columns:2;
+    column-gap:24px;
+    list-style:none;
+    margin:0;padding:0;
+    font-size:14px;
+  }
+  .nav-list li{ break-inside: avoid; margin-bottom:7px; }
+  .nav-list a{
+    color:var(--text);
+    text-decoration:none;
+    display:flex;
+    gap:8px;
+  }
+  .nav-list a:hover{ color:var(--accent); }
+  .nav-list .n{ color:var(--text-secondary); font-variant-numeric:tabular-nums; }
+
+  section{
+    padding-block:30px;
+    border-bottom:1px solid var(--border);
+    scroll-margin-top:20px;
+  }
+  section:last-of-type{ border-bottom:none; }
+  h2{
+    font-size:21px;
+    font-weight:700;
+    margin:0 0 14px;
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+  }
+  h2 .n{
+    color:var(--accent);
+    font-family:"Public Sans",sans-serif;
+    font-size:15px;
+    font-weight:700;
+  }
+  h3{
+    font-size:16px;
+    font-weight:700;
+    margin:20px 0 8px;
+  }
+  p{ margin:0 0 14px; }
+  ul{ margin:0 0 14px; padding-left:22px; }
+  li{ margin-bottom:8px; }
+
+  .data-table{
+    border:1px solid var(--border);
+    border-radius:12px;
+    overflow:hidden;
+    margin:16px 0 20px;
+  }
+  .data-row{
+    display:grid;
+    grid-template-columns:1fr 1.4fr;
+    gap:16px;
+    padding:14px 16px;
+    border-bottom:1px solid var(--border);
+    font-family:"Public Sans",sans-serif;
+    font-size:13.5px;
+  }
+  .data-row:last-child{ border-bottom:none; }
+  .data-row:nth-child(odd){ background:var(--surface); }
+  .data-label{ font-weight:600; }
+  .data-detail{ color:var(--text-secondary); line-height:1.5; }
+
+  .badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:12px;
+    font-weight:600;
+    padding:4px 10px;
+    border-radius:999px;
+    background:var(--accent-soft);
+    color:var(--accent-text);
+    margin:2px 6px 2px 0;
+  }
+
+  .callout{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-left:3px solid var(--accent);
+    border-radius:10px;
+    padding:14px 16px;
+    font-size:14.5px;
+    color:var(--text-secondary);
+    margin:16px 0;
+  }
+  .callout strong{ color:var(--text); }
+
+  .contact-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:20px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:16px 32px;
+    font-family:"Public Sans",sans-serif;
+  }
+  .contact-item .k{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:var(--text-secondary);
+    margin-bottom:4px;
+  }
+  .contact-item .v{ font-size:14.5px; font-weight:600; }
+  .contact-item a{ color:var(--accent); text-decoration:none; }
+
+  footer{
+    padding-top:28px;
+    font-size:12.5px;
+    color:var(--text-secondary);
+    font-family:"Public Sans",sans-serif;
+  }
+
+  @media (max-width:520px){
+    .nav-list{ columns:1; }
+    .data-row{ grid-template-columns:1fr; gap:4px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <div class="brand-mark">M</div>
+      <div class="brand-name">MEBU</div>
+    </div>
+    <p class="eyebrow">Document légal</p>
+    <h1>Politique de confidentialité</h1>
+    <div class="meta">
+      <span>Dernière mise à jour : 16 septembre 2026</span>
+      <span>·</span>
+      <span>Application : MEBU (<code>fr.akiiko.mebu</code>)</span>
+    </div>
+  </header>
+
+  <p class="intro"><strong>MEBU</strong> est une application non-officielle, développée et maintenue par un étudiant de l'ESME Sudria, qui remplace l'interface du portail scolaire Auriga (my.esme.fr) par une expérience mobile plus simple. Ce document explique quelles données l'app traite, pourquoi, et où elles vont.</p>
+
+  <nav class="toc">
+    <p class="eyebrow">Sommaire</p>
+    <ol class="nav-list">
+      <li><a href="#qui"><span class="n">1.</span> Qui gère MEBU</a></li>
+      <li><a href="#donnees"><span class="n">2.</span> Données traitées</a></li>
+      <li><a href="#stockage"><span class="n">3.</span> Où vont les données</a></li>
+      <li><a href="#analytics"><span class="n">4.</span> Statistiques &amp; plantages</a></li>
+      <li><a href="#partage"><span class="n">5.</span> Ce qu'on ne fait jamais</a></li>
+      <li><a href="#securite"><span class="n">6.</span> Sécurité</a></li>
+      <li><a href="#droits"><span class="n">7.</span> Tes droits</a></li>
+      <li><a href="#demo"><span class="n">8.</span> Compte de démonstration</a></li>
+      <li><a href="#contact"><span class="n">9.</span> Contact</a></li>
+    </ol>
+  </nav>
+
+  <section id="qui">
+    <h2><span class="n">1.</span> Qui gère MEBU</h2>
+    <p>MEBU est un projet étudiant indépendant, sans lien officiel avec l'administration de l'ESME Sudria ni avec Auriga/IONIS. Il est développé bénévolement pour faciliter l'accès des étudiants à leur emploi du temps, leurs notes et leurs absences.</p>
+    <div class="callout"><strong>Aucune finalité commerciale.</strong> MEBU ne vend rien, n'affiche aucune publicité, et ne monétise aucune donnée.</div>
+  </section>
+
+  <section id="donnees">
+    <h2><span class="n">2.</span> Données traitées</h2>
+    <p>MEBU ne collecte que ce qui est nécessaire au fonctionnement des fonctionnalités que tu utilises :</p>
+    <div class="data-table">
+      <div class="data-row">
+        <div class="data-label">Identifiants Auriga / Absences</div>
+        <div class="data-detail">Login et mot de passe de ton compte my.esme.fr, saisis par toi. Utilisés uniquement pour t'authentifier auprès du portail officiel de l'école — jamais transmis à un autre service.</div>
+      </div>
+      <div class="data-row">
+        <div class="data-label">Emploi du temps, notes, absences</div>
+        <div class="data-detail">Récupérés depuis my.esme.fr avec ton compte, et mis en cache sur ton téléphone pour un accès hors-ligne. Ces données ne transitent par aucun serveur appartenant à MEBU.</div>
+      </div>
+      <div class="data-row">
+        <div class="data-label">Photo de profil, préférences</div>
+        <div class="data-detail">Choisies par toi dans l'app, stockées uniquement sur ton appareil.</div>
+      </div>
+      <div class="data-row">
+        <div class="data-label">Événements du fil "Actus"</div>
+        <div class="data-detail">Titre, description, dates et lien d'événements créés par une liste restreinte d'organisateurs étudiants. Visibles par tous les utilisateurs de l'app. Hébergés chez Supabase (prestataire cloud tiers).</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="stockage">
+    <h2><span class="n">3.</span> Où vont les données</h2>
+    <p>
+      <span class="badge">Sur ton appareil</span>
+      <span class="badge">my.esme.fr</span>
+      <span class="badge">Supabase (événements uniquement)</span>
+    </p>
+    <p>L'essentiel de ce que MEBU affiche (emploi du temps, notes, absences, identifiants) ne quitte jamais ton téléphone en dehors des échanges directs avec le portail officiel de l'école. MEBU n'exploite aucun serveur central qui stockerait tes notes ou tes identifiants. Seuls les événements manuels du fil "Actus" sont hébergés sur une base de données partagée (Supabase), puisqu'ils sont par nature visibles par tout le monde.</p>
+  </section>
+
+  <section id="analytics">
+    <h2><span class="n">4.</span> Statistiques &amp; rapports de plantage</h2>
+    <p>Au premier lancement, MEBU te demande explicitement ton accord avant toute collecte de statistiques d'usage ou de rapports de plantage (via Countly). Tu choisis parmi plusieurs niveaux, et tu peux changer d'avis à tout moment depuis les réglages :</p>
+    <div class="data-table">
+      <div class="data-row">
+        <div class="data-label">Aucune</div>
+        <div class="data-detail">Rien n'est envoyé. C'est l'option par défaut si tu refuses.</div>
+      </div>
+      <div class="data-row">
+        <div class="data-label">Essentielle</div>
+        <div class="data-detail">Nombre de sessions d'utilisation uniquement, de façon anonyme.</div>
+      </div>
+      <div class="data-row">
+        <div class="data-label">Optionnelle</div>
+        <div class="data-detail">Ajoute les rapports de plantage et des informations techniques sur l'appareil, pour nous aider à corriger les bugs.</div>
+      </div>
+      <div class="data-row">
+        <div class="data-label">Avancée</div>
+        <div class="data-detail">Ajoute la localisation approximative et les retours/notes envoyés depuis l'app.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="partage">
+    <h2><span class="n">5.</span> Ce qu'on ne fait jamais</h2>
+    <ul>
+      <li>Vendre ou louer tes données à qui que ce soit</li>
+      <li>Afficher de la publicité</li>
+      <li>Partager tes notes, ton emploi du temps ou tes identifiants avec un tiers</li>
+      <li>Utiliser tes données à des fins autres que le fonctionnement de l'app</li>
+    </ul>
+  </section>
+
+  <section id="securite">
+    <h2><span class="n">6.</span> Sécurité</h2>
+    <p>Tes identifiants sont stockés dans le coffre-fort chiffré du système d'exploitation (Keychain sur iOS, Keystore sur Android via Expo SecureStore) — jamais en clair. Toutes les communications avec my.esme.fr et Supabase passent en HTTPS.</p>
+  </section>
+
+  <section id="droits">
+    <h2><span class="n">7.</span> Tes droits</h2>
+    <p>Conformément au RGPD, tu peux à tout moment :</p>
+    <ul>
+      <li><strong>Supprimer tes données locales</strong> — en te déconnectant ou en désinstallant l'app, tout ce qui était stocké sur ton téléphone est effacé</li>
+      <li><strong>Retirer ton consentement</strong> aux statistiques d'usage, depuis les réglages de l'app, à tout moment</li>
+      <li><strong>Demander la suppression</strong> d'un événement que tu as créé sur le fil "Actus", en nous contactant</li>
+    </ul>
+  </section>
+
+  <section id="demo">
+    <h2><span class="n">8.</span> Compte de démonstration</h2>
+    <p>Pour permettre aux équipes de revue des stores (Google Play, App Store) de tester l'app sans compte scolaire réel, MEBU propose un compte démo (<code>admin@admin.com</code>) qui charge uniquement des données fictives générées localement — aucune donnée d'un⋅e étudiant⋅e réel⋅le n'est utilisée.</p>
+  </section>
+
+  <section id="contact">
+    <h2><span class="n">9.</span> Contact</h2>
+    <p>Pour toute question sur cette politique ou tes données, ou pour exercer tes droits :</p>
+    <div class="contact-card">
+      <div class="contact-item">
+        <div class="k">Email</div>
+        <div class="v"><a href="mailto:akiiko@valks-lab.eu">akiiko@valks-lab.eu</a></div>
+      </div>
+      <div class="contact-item">
+        <div class="k">Application</div>
+        <div class="v">MEBU — fr.akiiko.mebu</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    MEBU est un projet étudiant indépendant, basé sur le projet open-source Chrysalide (lui-même dérivé de Papillon), sous licence GPL-3.0. Non affilié à l'ESME Sudria ni à IONIS Education Group.
+  </footer>
+</div>
+</body>
+</html>
