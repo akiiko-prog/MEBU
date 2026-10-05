@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import LinkCard, { LinksList, LinkEvent } from '../components/LinkCard';
 
 const HomeLinksWidget = React.memo(() => {
-    const displayedLinks = LinksList.slice(0, 3);
+    const displayedLinks = LinksList;
 
     return (
         <View style={styles.container}>

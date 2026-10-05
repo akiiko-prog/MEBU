@@ -47,7 +47,6 @@ const HomeScreen = () => {
     {
       icon: <Papicons name={"link"} />,
       title: t("Home_Widget_UsefulLinks"),
-      redirect: "(modals)/linksList",
       render: renderLinks
     },
   ], [renderTimeTable, renderNextEvent, renderLinks]);
