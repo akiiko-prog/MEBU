@@ -147,7 +147,11 @@ class AurigaAPI {
             additionalInfo: lesson.description || undefined,
             cancel: lesson.interventionStatus.code != "PLANIFIE",
             room: lesson.locations
-              .map((element: any) => `${String(element.code.split('_')[3])}(${element.floor}e)`)
+              // Format ESME "étage.salle" (ex : 2.11) plutôt que "11(2e)"
+              .map((element: any) => {
+                const room = element.code.split('_')[3];
+                return room ? `${element.floor}.${room}` : undefined;
+              })
               .filter(Boolean)
               .join(", "),
             teacher: lesson.instructors
