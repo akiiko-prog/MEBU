@@ -66,11 +66,21 @@ function getStableCourseKey(input: {
   return `${toIsoValue(input.from)}|${toIsoValue(input.to)}|${input.createdByAccount}|${normalizedValue(input.kidName)}`;
 }
 
-export async function addCourseDayToDatabase(courses: SharedCourseDay[]) {
+/**
+ * @param syncRange Période couverte par la récupération. Si fournie, les cours
+ * du même compte présents en base sur cette période mais absents de `courses`
+ * sont supprimés (cours déplacés ou retirés de l'emploi du temps).
+ */
+export async function addCourseDayToDatabase(
+  courses: SharedCourseDay[],
+  syncRange?: { from: Date; to: Date },
+) {
   const db = getDatabaseInstance();
   await safeWrite(
     db,
     async () => {
+      const syncedIds = new Set<string>();
+
       for (const day of courses) {
         if (day.courses.length === 0) continue;
 
@@ -88,6 +98,7 @@ export async function addCourseDayToDatabase(courses: SharedCourseDay[]) {
         for (const item of day.courses) {
           const oldId = generateId(item.from.toISOString() + item.to.toISOString() + item.subject + item.teacher + item.room + item.createdByAccount);
           const id = generateId(item.from.toISOString() + item.to.toISOString() + item.subject + item.teacher + item.createdByAccount);
+          syncedIds.add(id);
           const stableKey = getStableCourseKey({
             from: item.from,
             to: item.to,
@@ -199,6 +210,25 @@ export async function addCourseDayToDatabase(courses: SharedCourseDay[]) {
                   kidName: item.kidName ?? course.kidName,
                 });
               });
+            }
+          }
+        }
+      }
+
+      if (syncRange) {
+        const accountIds = Array.from(new Set(
+          courses.flatMap(day => day.courses.map(c => c.createdByAccount))
+        ));
+        if (accountIds.length > 0) {
+          const staleCourses = await db.get<Course>('courses')
+            .query(
+              Q.where('from', Q.between(syncRange.from.getTime(), syncRange.to.getTime())),
+              Q.where('createdByAccount', Q.oneOf(accountIds))
+            )
+            .fetch();
+          for (const stale of staleCourses) {
+            if (!syncedIds.has(stale.courseId)) {
+              await stale.destroyPermanently();
             }
           }
         }
