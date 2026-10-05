@@ -8,7 +8,7 @@
  */
 
 export const EVENT_CREATOR_WHITELIST: string[] = [
-  "arthuad.delvau@esme.fr",
+  "arthaud.delvau@esme.fr",
   "elouan.gleyze@esme.fr",
   "elise.dezothez-jorgensen@esme.fr",
   "carla.bessonneau@esme.fr",
