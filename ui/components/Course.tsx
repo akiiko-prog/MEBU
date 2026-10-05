@@ -336,7 +336,7 @@ const Course = React.memo((props: CourseProps) => {
           {/* Statut du cours */}
           {status && !status.canceled && variant === "primary" && (
             <View style={{ flexDirection: "row", alignItems: "center", gap: 7, marginTop: status.label ? 4 : 0, opacity: skeleton ? 0.5 : 1 }}>
-              {status.label && (
+              {status.label ? (
                 <Stack
                   radius={300}
                   backgroundColor={skeleton ? colors.text + "09" : colors.background}
@@ -351,7 +351,7 @@ const Course = React.memo((props: CourseProps) => {
                     {status.label}
                   </Typography>
                 </Stack>
-              )}
+              ) : null}
               <Typography variant="h4" style={[styles.statusDuration, { color: textColor + "95" }]} skeleton={skeleton}>
                 {formatDuration(duration)}
               </Typography>
