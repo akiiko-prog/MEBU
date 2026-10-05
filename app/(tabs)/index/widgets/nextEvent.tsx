@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import { useFocusEffect } from 'expo-router';
+import React, { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { fetchEvents, SchoolEvent } from '@/services/events';
@@ -9,15 +10,19 @@ import EventCard from '@/app/(tabs)/news/components/EventCard';
 const HomeNextEventWidget = React.memo(() => {
     const [nextEvent, setNextEvent] = useState<SchoolEvent | null>(null);
 
-    useEffect(() => {
-        fetchEvents().then((events) => {
-            const now = new Date();
-            const upcoming = events
-                .filter((e) => new Date(e.time_end) >= now)
-                .sort((a, b) => new Date(a.time_start).getTime() - new Date(b.time_start).getTime());
-            setNextEvent(upcoming[0] ?? null);
-        });
-    }, []);
+    // Recharger à chaque retour sur l'accueil : l'onglet reste monté, donc un
+    // événement créé ou modifié entre-temps n'apparaîtrait sinon qu'au redémarrage
+    useFocusEffect(
+        useCallback(() => {
+            fetchEvents().then((events) => {
+                const now = new Date();
+                const upcoming = events
+                    .filter((e) => new Date(e.time_end) >= now)
+                    .sort((a, b) => new Date(a.time_start).getTime() - new Date(b.time_start).getTime());
+                setNextEvent(upcoming[0] ?? null);
+            });
+        }, [])
+    );
 
     if (!nextEvent) {
         return (

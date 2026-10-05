@@ -164,17 +164,15 @@ export async function addCourseDayToDatabase(
               safeCmp(item.additionalInfo, courseToUpdate.additionalInfo) ||
               safeCmp(item.type, courseToUpdate.type);
 
-            let newStatus = item.status ?? courseToUpdate.status;
+            // Le statut suit la source à chaque synchro : "modifié" ne reste pas
+            // collé au cours une fois le changement passé
+            let newStatus = item.status;
 
             if (item.cancel === true) {
               if (courseToUpdate.status !== CourseStatus.CANCELED) {
-                newStatus = CourseStatus.CANCELED;
                 sendCancelCourseNotification(courseToUpdate.subject);
-              } else {
-                newStatus = CourseStatus.CANCELED;
               }
-            } else if (courseToUpdate.status === CourseStatus.CANCELED && (item.status === undefined || item.status === null)) {
-              newStatus = hasChanged ? CourseStatus.EDITED : undefined;
+              newStatus = CourseStatus.CANCELED;
             } else if (hasChanged && (item.status === undefined || item.status === null)) {
               newStatus = CourseStatus.EDITED;
             }
