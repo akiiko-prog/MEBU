@@ -28,7 +28,8 @@ export const LinksList = [
     { title: "ESME France", url: "https://www.esme.fr/", color: "#C50017" },
     { title: "Moodle", url: "https://moodle.esme.fr/", color: "#6BAE00" },
     { title: "Auriga", url: "https://my.esme.fr/", color: "#fa8c3a" },
-    { title: "Planette esme", url: "https://esmefr.sharepoint.com/sites/AccueilESME", color: "#0062e2" },
+    { title: "Planète ESME", url: "https://esmefr.sharepoint.com/sites/AccueilESME/SitePages/Besoin-d%27aide--.aspx", color: "#0062e2" },
+    { title: "Fab Lab", url: "https://manager.esmartlab-bordeaux.fr/auth/sign-in?next=%2Fdashboard%2Fprojects%2F83%2Forders", color: "#8E44AD" },
 ];
 
 const LinkCard: React.FC<LinkCardProps> = ({ event, borderRadius = 20, style }) => {
