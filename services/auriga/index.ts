@@ -17,6 +17,28 @@ export const storage = new MMKV({
   id: "auriga-storage",
 });
 
+/** Année scolaire en cours : du 1er septembre au 31 août (bascule en août). */
+function getSchoolYearRange() {
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const startYear = now.getMonth() >= 7 ? currentYear : currentYear - 1;
+  return {
+    startDate: `${startYear}-09-01`,
+    endDate: `${startYear + 1}-08-31`,
+    from: new Date(startYear, 8, 1),
+    to: new Date(startYear + 1, 7, 31, 23, 59, 59, 999),
+  };
+}
+
+/**
+ * Seul un statut d'annulation explicite marque un cours comme annulé : les
+ * cours passés changent aussi de statut (ex : réalisé) et ne doivent pas
+ * apparaître barrés.
+ */
+function isCancelledStatus(code: string): boolean {
+  return /ANNUL|SUPPRIM/i.test(code);
+}
+
 /**
  * Extracts the stable subject code from a grade/syllabus name.
  * Pattern: YYYY_[SECTION]_[...]_SXX_[SUBJECT_CODE]
@@ -121,6 +143,8 @@ class AurigaAPI {
       if (edt.length > 0) {
         storage.set("auriga_edt", JSON.stringify(edt));
         log(`[AURIGA] ${edt.length} cours récupérés.`);
+        const statusCodes = Array.from(new Set(edt.map(lesson => lesson.interventionStatus.code)));
+        log(`[AURIGA] Statuts des cours : ${statusCodes.join(", ")}`);
 
         const dayMap: Record<string, CourseDay> = {};
         edt.forEach(lesson => {
@@ -145,7 +169,7 @@ class AurigaAPI {
             from: fromDate,
             to: toDate,
             additionalInfo: lesson.description || undefined,
-            cancel: lesson.interventionStatus.code != "PLANIFIE",
+            cancel: isCancelledStatus(lesson.interventionStatus.code),
             room: lesson.locations
               // Format ESME "étage.salle" (ex : 2.11) plutôt que "11(2e)"
               .map((element: any) => {
@@ -172,7 +196,9 @@ class AurigaAPI {
 
         let courseDayList: CourseDay[] = Object.values(dayMap);
 
-        addCourseDayToDatabase(courseDayList);
+        // La plage permet de supprimer les cours déplacés ou retirés d'Auriga
+        const { from, to } = getSchoolYearRange();
+        addCourseDayToDatabase(courseDayList, { from, to });
 
       } else {
         log("[AURIGA] Aucun cours trouvé.");
@@ -537,11 +563,7 @@ class AurigaAPI {
     try {
       const allEDT: EdtEvent[] = [];
 
-      const now = new Date();
-      const currentYear = now.getFullYear();
-      const startYear = now.getMonth() >= 7 ? currentYear : currentYear - 1;
-      const startDate = `${startYear}-09-01`;
-      const endDate = `${startYear + 1}-08-31`;
+      const { startDate, endDate } = getSchoolYearRange();
 
       const endpoint = `plannings/me?days=1&days=2&days=3&days=4&days=5&days=6&days=7&startDate=${startDate}&endDate=${endDate}`;
       console.log(`[AURIGA] | (EDT) Récupération des cours du ${startDate} au ${endDate}...`);
