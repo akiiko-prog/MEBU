@@ -96,6 +96,10 @@ export async function addCourseDayToDatabase(
           .fetch();
 
         for (const item of day.courses) {
+          // Cours relu depuis la base (ex : Auriga sert l'EDT depuis le cache) :
+          // le réécrire écraserait un statut plus récent posé par la synchro
+          if (item.fromCache) continue;
+
           const oldId = generateId(item.from.toISOString() + item.to.toISOString() + item.subject + item.teacher + item.room + item.createdByAccount);
           const id = generateId(item.from.toISOString() + item.to.toISOString() + item.subject + item.teacher + item.createdByAccount);
           syncedIds.add(id);
