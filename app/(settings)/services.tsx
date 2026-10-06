@@ -21,7 +21,6 @@ export default function SettingsServices() {
   const router = useRouter();
 
   const isTeacher = useFlagsStore((state) => state.isTeacher);
-  const setTeacher = useFlagsStore((state) => state.setTeacher);
 
   const [aurigaConnected, setAurigaConnected] = useState(false);
   const [attendanceConnected, setAttendanceConnected] = useState(false);
@@ -143,19 +142,8 @@ export default function SettingsServices() {
           </Stack>
         </Item>
 
-        <Item
-          onPress={() => {
-            Alert.alert(
-              "Profil",
-              "Le profil enseignant masque les notes et les absences.",
-              [
-                { text: t("Settings_Services_CancelButton"), style: "cancel" },
-                { text: "Étudiant", onPress: () => setTeacher(false) },
-                { text: "Enseignant", onPress: () => setTeacher(true) },
-              ]
-            );
-          }}
-        >
+        {/* Lecture seule : le profil est imposé par la whitelist enseignants */}
+        <Item>
           <Stack direction="horizontal" vAlign="center" gap={12} style={{ flex: 1 }}>
             <Typography variant="title">Profil</Typography>
             <View style={{ flex: 1 }} />
