@@ -6,6 +6,7 @@ import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import AbsencesAPI from "@/services/absences";
+import { useFlagsStore } from "@/stores/flags";
 import Stack from '@/ui/components/Stack';
 import { getCurrentPeriod } from '@/utils/grades/helper/period';
 
@@ -17,7 +18,10 @@ const HomeHeader = () => {
   const insets = useSafeAreaInsets();
   const { attendancesPeriods, attendances, absencesCount, lastAbsence, totalAbsenceHours, lastSubjectName } = useHomeHeaderData();
 
-  const HomeHeaderButtons: HomeHeaderButtonItem[] = useMemo(() => [
+  // Pas d'absences pour un enseignant : aucun bouton
+  const isTeacher = useFlagsStore((state) => state.isTeacher);
+
+  const HomeHeaderButtons: HomeHeaderButtonItem[] = useMemo(() => isTeacher ? [] : [
     {
       title: t("Home_Attendance_Title"),
       icon: "chair",
@@ -43,7 +47,7 @@ const HomeHeader = () => {
         });
       }
     }
-  ], [absencesCount, totalAbsenceHours, lastSubjectName, attendancesPeriods, attendances, t, lastAbsence]);
+  ], [isTeacher, absencesCount, totalAbsenceHours, lastSubjectName, attendancesPeriods, attendances, t, lastAbsence]);
 
   return (
     <View style={{ paddingHorizontal: 0, paddingVertical: 12, width: "100%", flex: 1 }}>

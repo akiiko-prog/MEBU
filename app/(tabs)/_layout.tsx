@@ -9,6 +9,7 @@ import React, { useMemo } from 'react';
 import { useTranslation } from "react-i18next";
 import { Platform } from 'react-native';
 
+import { useFlagsStore } from "@/stores/flags";
 import { runsIOS26 } from "@/ui/utils/IsLiquidGlass";
 
 const BottomTabNavigator = createNativeBottomTabNavigator().Navigator;
@@ -61,6 +62,8 @@ export default function TabLayout() {
   // Use optimized translation hook
   const translations = useTabTranslations();
   const { colors } = useTheme();
+  // Un enseignant n'a pas de notes : onglet masqué
+  const isTeacher = useFlagsStore((state) => state.isTeacher);
 
   // Memoize screen options to prevent object recreation
   const screenOptions = useMemo(() => ({
@@ -75,12 +78,13 @@ export default function TabLayout() {
     grades: {
       title: translations.grades,
       tabBarIcon: getGradesIcon,
+      tabBarItemHidden: isTeacher,
     },
     news: {
       title: translations.news,
       tabBarIcon: getNewsIcon,
     },
-  }), [translations]);
+  }), [translations, isTeacher]);
 
   return (
     <Tabs

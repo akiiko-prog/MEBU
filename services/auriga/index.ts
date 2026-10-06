@@ -3,6 +3,7 @@ import { MMKV } from "react-native-mmkv";
 import { addSubjectsToDatabase } from "@/database/useSubject";
 import { useAccountStore } from "@/stores/account";
 import { Services } from "@/stores/account/types";
+import { useFlagsStore } from "@/stores/flags";
 import { registerSubjectColor } from "@/utils/subjects/colors";
 import { getSubjectEmoji } from "@/utils/subjects/emoji";
 import { cleanSubjectName } from "@/utils/subjects/utils";
@@ -211,95 +212,101 @@ class AurigaAPI {
       console.error("[AURIGA] Erreur lors de la récupération des cours:", e);
     }
 
-    log("[AURIGA] Récupération des notes...");
-    try {
-      fetchedGrades = await this.fetchAllGrades();
-      if (fetchedGrades.length > 0) {
-        const existingCached = storage.getString("auriga_grades");
-        const existingGrades: Grade[] = existingCached
-          ? JSON.parse(existingCached)
-          : [];
+    // Un enseignant n'a ni notes ni syllabus : inutile de les demander à Auriga
+    const isTeacher = useFlagsStore.getState().isTeacher;
+    if (isTeacher) {
+      log("[AURIGA] Mode enseignant : notes et syllabus ignorés.");
+    } else {
+      log("[AURIGA] Récupération des notes...");
+      try {
+        fetchedGrades = await this.fetchAllGrades();
+        if (fetchedGrades.length > 0) {
+          const existingCached = storage.getString("auriga_grades");
+          const existingGrades: Grade[] = existingCached
+            ? JSON.parse(existingCached)
+            : [];
 
-        const existingGradesMap = new Map<string, Grade>();
-        existingGrades.forEach(g => existingGradesMap.set(g.code, g));
+          const existingGradesMap = new Map<string, Grade>();
+          existingGrades.forEach(g => existingGradesMap.set(g.code, g));
 
-        const now = Date.now();
-        fetchedGrades = fetchedGrades.map(g => {
-          const existing = existingGradesMap.get(g.code);
-          return {
-            ...g,
-            syncedAt: existing?.syncedAt || now,
-          };
-        });
+          const now = Date.now();
+          fetchedGrades = fetchedGrades.map(g => {
+            const existing = existingGradesMap.get(g.code);
+            return {
+              ...g,
+              syncedAt: existing?.syncedAt || now,
+            };
+          });
 
-        storage.set("auriga_grades", JSON.stringify(fetchedGrades));
-        log(`[AURIGA] ${fetchedGrades.length} notes récupérées.`);
-      } else {
-        log("[AURIGA] Aucune note récupérée.");
+          storage.set("auriga_grades", JSON.stringify(fetchedGrades));
+          log(`[AURIGA] ${fetchedGrades.length} notes récupérées.`);
+        } else {
+          log("[AURIGA] Aucune note récupérée.");
+          const cached = storage.getString("auriga_grades");
+          if (cached) {
+            fetchedGrades = JSON.parse(cached);
+          }
+        }
+      } catch (e) {
+        console.error("Failed to fetch grades:", e);
         const cached = storage.getString("auriga_grades");
         if (cached) {
           fetchedGrades = JSON.parse(cached);
         }
       }
-    } catch (e) {
-      console.error("Failed to fetch grades:", e);
-      const cached = storage.getString("auriga_grades");
-      if (cached) {
-        fetchedGrades = JSON.parse(cached);
-      }
-    }
 
-    log("[AURIGA] Récupération des syllabus...");
-    try {
-      fetchedSyllabus = await this.fetchAllSyllabus();
-      if (fetchedSyllabus.length > 0) {
-        storage.set("auriga_syllabus", JSON.stringify(fetchedSyllabus));
-        log(`[AURIGA] ${fetchedSyllabus.length} syllabus récupérés.`);
+      log("[AURIGA] Récupération des syllabus...");
+      try {
+        fetchedSyllabus = await this.fetchAllSyllabus();
+        if (fetchedSyllabus.length > 0) {
+          storage.set("auriga_syllabus", JSON.stringify(fetchedSyllabus));
+          log(`[AURIGA] ${fetchedSyllabus.length} syllabus récupérés.`);
+          for (const s of fetchedSyllabus) {
+            log(
+              `[AURIGA] | (Syllabus) ${s.name} | UE: ${s.UE} | S${s.semester} | ${s.caption?.name || "No caption"}`
+            );
+          }
+        } else {
+          log("[AURIGA] Aucun syllabus récupéré.");
+          const cached = storage.getString("auriga_syllabus");
+          if (cached) {
+            fetchedSyllabus = JSON.parse(cached);
+          }
+        }
+
+        const subjectsToAdd = fetchedSyllabus.map((s: Syllabus) => ({
+          id: s.name || String(s.id),
+          name: s.caption?.name || s.name || String(s.id),
+          studentAverage: {
+            value: s.grade ?? 0,
+            disabled: s.grade === undefined,
+          },
+          classAverage: { value: 0, disabled: true },
+          maximum: { value: 0, disabled: true },
+          minimum: { value: 0, disabled: true },
+          outOf: { value: 20 },
+        }));
+
+        await addSubjectsToDatabase(subjectsToAdd);
+
+        const store = useAccountStore.getState();
         for (const s of fetchedSyllabus) {
-          log(
-            `[AURIGA] | (Syllabus) ${s.name} | UE: ${s.UE} | S${s.semester} | ${s.caption?.name || "No caption"}`
-          );
+          const subjectName = s.caption?.name || s.name || String(s.id);
+          const cleanedName = cleanSubjectName(subjectName);
+
+          registerSubjectColor(subjectName);
+
+          const emoji = getSubjectEmoji(subjectName);
+
+          store.setSubjectName(cleanedName, subjectName);
+          store.setSubjectEmoji(cleanedName, emoji);
         }
-      } else {
-        log("[AURIGA] Aucun syllabus récupéré.");
-        const cached = storage.getString("auriga_syllabus");
-        if (cached) {
-          fetchedSyllabus = JSON.parse(cached);
-        }
+        log(
+          `[AURIGA] ${fetchedSyllabus.length} matières enregistrées.`
+        );
+      } catch (e) {
+        console.error("[AURIGA] Erreur lors de la récupération des syllabus:", e);
       }
-
-      const subjectsToAdd = fetchedSyllabus.map((s: Syllabus) => ({
-        id: s.name || String(s.id),
-        name: s.caption?.name || s.name || String(s.id),
-        studentAverage: {
-          value: s.grade ?? 0,
-          disabled: s.grade === undefined,
-        },
-        classAverage: { value: 0, disabled: true },
-        maximum: { value: 0, disabled: true },
-        minimum: { value: 0, disabled: true },
-        outOf: { value: 20 },
-      }));
-
-      await addSubjectsToDatabase(subjectsToAdd);
-
-      const store = useAccountStore.getState();
-      for (const s of fetchedSyllabus) {
-        const subjectName = s.caption?.name || s.name || String(s.id);
-        const cleanedName = cleanSubjectName(subjectName);
-
-        registerSubjectColor(subjectName);
-
-        const emoji = getSubjectEmoji(subjectName);
-
-        store.setSubjectName(cleanedName, subjectName);
-        store.setSubjectEmoji(cleanedName, emoji);
-      }
-      log(
-        `[AURIGA] ${fetchedSyllabus.length} matières enregistrées.`
-      );
-    } catch (e) {
-      console.error("[AURIGA] Erreur lors de la récupération des syllabus:", e);
     }
 
     log("[AURIGA] Récupération des données utilisateur...");
