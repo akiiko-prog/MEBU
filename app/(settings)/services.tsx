@@ -6,6 +6,7 @@ import { Alert, ScrollView, View } from "react-native";
 
 import { useAccountStore } from "@/stores/account";
 import { Services } from "@/stores/account/types";
+import { useFlagsStore } from "@/stores/flags";
 import Icon from "@/ui/components/Icon";
 import Item from "@/ui/components/Item";
 import List from "@/ui/components/List";
@@ -18,6 +19,9 @@ export default function SettingsServices() {
   const accountStore = useAccountStore();
   const { t } = useTranslation();
   const router = useRouter();
+
+  const isTeacher = useFlagsStore((state) => state.isTeacher);
+  const setTeacher = useFlagsStore((state) => state.setTeacher);
 
   const [aurigaConnected, setAurigaConnected] = useState(false);
   const [attendanceConnected, setAttendanceConnected] = useState(false);
@@ -141,6 +145,28 @@ export default function SettingsServices() {
 
         <Item
           onPress={() => {
+            Alert.alert(
+              "Profil",
+              "Le profil enseignant masque les notes et les absences.",
+              [
+                { text: t("Settings_Services_CancelButton"), style: "cancel" },
+                { text: "Étudiant", onPress: () => setTeacher(false) },
+                { text: "Enseignant", onPress: () => setTeacher(true) },
+              ]
+            );
+          }}
+        >
+          <Stack direction="horizontal" vAlign="center" gap={12} style={{ flex: 1 }}>
+            <Typography variant="title">Profil</Typography>
+            <View style={{ flex: 1 }} />
+            <Typography variant="body1" color="secondary">
+              {isTeacher ? "Enseignant" : "Étudiant"}
+            </Typography>
+          </Stack>
+        </Item>
+
+        {!isTeacher && <Item
+          onPress={() => {
             if (attendanceConnected) {
               Alert.alert(
                 t("Settings_Services_Modal_Title_AbsenceDisonnection"),
@@ -162,7 +188,7 @@ export default function SettingsServices() {
               {attendanceConnected ? t("Settings_Services_Connected") : t("Settings_Services_NotConnected")}
             </Typography>
           </Stack>
-        </Item>
+        </Item>}
       </List>
 
       {accountStore.accounts.length === 0 && (
