@@ -18,10 +18,11 @@ const HomeHeader = () => {
   const insets = useSafeAreaInsets();
   const { attendancesPeriods, attendances, absencesCount, lastAbsence, totalAbsenceHours, lastSubjectName } = useHomeHeaderData();
 
-  // Pas d'absences pour un enseignant : aucun bouton
+  // Pas d'absences pour un enseignant ni pour le compte com : aucun bouton
   const isTeacher = useFlagsStore((state) => state.isTeacher);
+  const isCom = useFlagsStore((state) => state.isCom);
 
-  const HomeHeaderButtons: HomeHeaderButtonItem[] = useMemo(() => isTeacher ? [] : [
+  const HomeHeaderButtons: HomeHeaderButtonItem[] = useMemo(() => isTeacher || isCom ? [] : [
     {
       title: t("Home_Attendance_Title"),
       icon: "chair",
@@ -47,7 +48,7 @@ const HomeHeader = () => {
         });
       }
     }
-  ], [isTeacher, absencesCount, totalAbsenceHours, lastSubjectName, attendancesPeriods, attendances, t, lastAbsence]);
+  ], [isTeacher, isCom, absencesCount, totalAbsenceHours, lastSubjectName, attendancesPeriods, attendances, t, lastAbsence]);
 
   return (
     <View style={{ paddingHorizontal: 0, paddingVertical: 12, width: "100%", flex: 1 }}>

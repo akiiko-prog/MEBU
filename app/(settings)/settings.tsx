@@ -9,7 +9,9 @@ import { Alert, Image, View } from "react-native";
 
 import { clearAttendanceData, clearAurigaData } from "@/database/cleanup";
 import AbsencesAPI from "@/services/absences";
+import { signOutCom } from "@/services/events";
 import { useAccountStore } from "@/stores/account";
+import { useFlagsStore } from "@/stores/flags";
 import { useSettingsStore } from "@/stores/settings";
 import AnimatedPressable from "@/ui/components/AnimatedPressable";
 import Avatar from "@/ui/components/Avatar";
@@ -67,6 +69,12 @@ export default function SettingsIndex() {
         accountStore.removeAccount(account);
 
         AbsencesAPI.setToken("");
+
+        // Compte com : fermer la session Supabase et revenir au profil par défaut
+        if (useFlagsStore.getState().isCom) {
+          await signOutCom();
+          useFlagsStore.getState().setCom(false);
+        }
 
         console.log("Logged out successfully, account removed and data cleared.");
 

@@ -4,7 +4,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Platform, ScrollView, TextInput as RNTextInput, View } from 'react-native';
 
-import { createEvent, fetchEvents, updateEvent } from '@/services/events';
+import { createEvent, fetchEvents, getComEmail, updateEvent } from '@/services/events';
 import { Services } from '@/stores/account/types';
 import { useAlert } from '@/ui/components/AlertProvider';
 import AnimatedPressable from '@/ui/components/AnimatedPressable';
@@ -57,7 +57,9 @@ export default function CreateEventScreen() {
         }
 
         setSaving(true);
-        const { username } = await getCredentials(Services.AURIGA) || { username: 'inconnu' };
+        // Compte com : pas d'identifiants Auriga, on signe avec l'email Supabase
+        const { username } = await getCredentials(Services.AURIGA)
+            || { username: await getComEmail() ?? 'inconnu' };
 
         const payload = {
             title: title.trim(),

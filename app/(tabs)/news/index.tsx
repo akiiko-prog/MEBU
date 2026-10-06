@@ -13,6 +13,7 @@ import { fetchEvents, deleteEvent, SchoolEvent } from '@/services/events';
 import { canCreateEvent } from '@/utils/permission/eventPermissions';
 import { getCredentials } from '@/utils/credentialStore';
 import { Services } from '@/stores/account/types';
+import { useFlagsStore } from '@/stores/flags';
 import AnimatedPressable from '@/ui/components/AnimatedPressable'
 import { Dynamic } from '@/ui/components/Dynamic'
 import Icon from '@/ui/components/Icon'
@@ -41,13 +42,16 @@ const NewsView = () => {
   const [currentLogin, setCurrentLogin] = useState<string | null>(null);
   const [searchText, setSearchText] = useState('');
 
+  const isCom = useFlagsStore((state) => state.isCom);
+
   useEffect(() => {
     getCredentials(Services.AURIGA).then((creds) => {
       if (creds?.username) setCurrentLogin(creds.username);
     });
   }, []);
 
-  const canEdit = useMemo(() => canCreateEvent(currentLogin), [currentLogin]);
+  // Le compte com (authentifié par Supabase) publie au même titre que les assos
+  const canEdit = useMemo(() => isCom || canCreateEvent(currentLogin), [isCom, currentLogin]);
 
   const loadEvents = useCallback(async () => {
     setIsLoading(true);
