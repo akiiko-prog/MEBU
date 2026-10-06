@@ -21,6 +21,7 @@ import Typography from "@/ui/components/Typography";
 import ViewContainer from "@/ui/components/ViewContainer";
 import { loginAurigaPure } from "@/utils/aurigaAuthWorker";
 import { getCredentials, saveAurigaRefreshToken, saveCredentials } from "@/utils/credentialStore";
+import { isTeacherAccount } from "@/utils/permission/teacherPermissions";
 import { useTranslation } from "react-i18next";
 
 export default function AurigaLoginScreen() {
@@ -356,6 +357,22 @@ export default function AurigaLoginScreen() {
                     color: "#D60000",
                 });
             }
+            return;
+        }
+
+        // Le profil choisi doit correspondre à la whitelist enseignants, dans
+        // les deux sens : un élève ne peut pas entrer en prof, ni l'inverse
+        const choseTeacher = useFlagsStore.getState().isTeacher;
+        const isTeacher = isTeacherAccount(username);
+        if (choseTeacher !== isTeacher) {
+            alert.showAlert({
+                title: "Mauvais profil",
+                description: isTeacher
+                    ? "Ce compte est un compte enseignant. Reviens en arrière et choisis « Enseignant ESME »."
+                    : "Ce compte n'est pas enregistré comme enseignant. Reviens en arrière et choisis « Étudiant ESME ».",
+                icon: "AlertCircle",
+                color: "#D60000"
+            });
             return;
         }
 

@@ -5,12 +5,15 @@ import {
 } from "@bottom-tabs/react-navigation";
 import { ParamListBase, TabNavigationState, useTheme } from "@react-navigation/native";
 import { withLayoutContext } from "expo-router";
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useTranslation } from "react-i18next";
 import { Platform } from 'react-native';
 
+import { Services } from "@/stores/account/types";
 import { useFlagsStore } from "@/stores/flags";
 import { runsIOS26 } from "@/ui/utils/IsLiquidGlass";
+import { getCredentials } from "@/utils/credentialStore";
+import { isTeacherAccount } from "@/utils/permission/teacherPermissions";
 
 const BottomTabNavigator = createNativeBottomTabNavigator().Navigator;
 
@@ -64,6 +67,17 @@ export default function TabLayout() {
   const { colors } = useTheme();
   // Un enseignant n'a pas de notes : onglet masqué
   const isTeacher = useFlagsStore((state) => state.isTeacher);
+
+  // La whitelist fait foi : le profil est recalculé à chaque lancement (prof
+  // retiré de la liste, ancien choix manuel...). Sans identifiants (compte
+  // démo), on garde le profil choisi à la connexion.
+  useEffect(() => {
+    getCredentials(Services.AURIGA).then((creds) => {
+      if (creds?.username) {
+        useFlagsStore.getState().setTeacher(isTeacherAccount(creds.username));
+      }
+    });
+  }, []);
 
   // Memoize screen options to prevent object recreation
   const screenOptions = useMemo(() => ({
