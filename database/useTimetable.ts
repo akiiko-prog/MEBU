@@ -20,24 +20,30 @@ export function useTimetable(refresh = 0, weekNumber: number | number[] = 0) {
   const weeks = Array.isArray(weekNumber) ? weekNumber : [weekNumber];
   const weeksKey = weeks.join(',');
 
+  // En faisant défiler vite le calendrier, plusieurs lectures sont en vol en
+  // même temps et peuvent se terminer dans le désordre : on ignore le résultat
+  // d'une lecture dès que les semaines demandées ont changé, sinon une vieille
+  // semaine (souvent vide) remplace celle affichée.
   useEffect(() => {
-    const fetchTimetable = async () => {
-      const timetableFetched = await getCoursesFromCache(weeks);
-      setTimetable(timetableFetched);
-    };
-    fetchTimetable();
+    let cancelled = false;
+    getCoursesFromCache(weeks).then((timetableFetched) => {
+      if (!cancelled) setTimetable(timetableFetched);
+    });
+    return () => { cancelled = true; };
   }, [refresh, database, weeksKey]);
 
   useEffect(() => {
+    let cancelled = false;
     const icalQuery = database.get('icals').query();
     const subscription = icalQuery.observe().subscribe(() => {
-      const fetchTimetable = async () => {
-        const timetableFetched = await getCoursesFromCache(weeks);
-        setTimetable(timetableFetched);
-      };
-      fetchTimetable();
+      getCoursesFromCache(weeks).then((timetableFetched) => {
+        if (!cancelled) setTimetable(timetableFetched);
+      });
     });
-    return () => subscription.unsubscribe();
+    return () => {
+      cancelled = true;
+      subscription.unsubscribe();
+    };
   }, [database, weeksKey]);
 
   return timetable;
@@ -95,6 +101,13 @@ export async function addCourseDayToDatabase(
           )
           .fetch();
 
+        // Identifiants de tous les cours reçus pour ce jour : un enregistrement
+        // qui porte l'un d'eux appartient déjà à un autre cours du lot
+        const dayIds = new Set(day.courses.map(c =>
+          generateId(c.from.toISOString() + c.to.toISOString() + c.subject + c.teacher + c.createdByAccount)
+        ));
+        const claimedRecords = new Set<string>();
+
         for (const item of day.courses) {
           // Cours relu depuis la base (ex : Auriga sert l'EDT depuis le cache) :
           // le réécrire écraserait un statut plus récent posé par la synchro
@@ -124,8 +137,14 @@ export async function addCourseDayToDatabase(
             }
           }
 
+          // Repli sur le même créneau (ex : prof changé) uniquement pour un
+          // enregistrement orphelin : sans ça, deux cours en parallèle (options,
+          // groupes) se transformaient l'un en l'autre à chaque synchro, l'un
+          // disparaissait et l'autre restait marqué "modifié"
           const fallbackRecord = existingRecords.length === 0
             ? dbCourses.find(dbCourse =>
+              !dayIds.has(dbCourse.courseId) &&
+              !claimedRecords.has(dbCourse.id) &&
               getStableCourseKey({
                 from: dbCourse.from,
                 to: dbCourse.to,
@@ -134,6 +153,7 @@ export async function addCourseDayToDatabase(
               }) === stableKey
             )
             : undefined;
+          if (fallbackRecord) claimedRecords.add(fallbackRecord.id);
 
           const courseToUpdate = (existingRecords[0] as Course | undefined) ?? (fallbackRecord as Course | undefined);
 
