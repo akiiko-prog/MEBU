@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
+import { Papicons } from '@getpapillon/papicons';
 import { useTheme } from '@react-navigation/native';
 import { UnknownInputParams } from 'expo-router';
 import React from 'react';
@@ -26,6 +27,7 @@ export function GetSupportedServices(redirect: (path: { pathname: string, option
   // masquer les notes et les absences (inexistantes pour un enseignant)
   const loginAs = (teacher: boolean) => {
     useFlagsStore.getState().setTeacher(teacher);
+    useFlagsStore.getState().setCom(false);
     redirect({ pathname: '../university/multi/aurigaAuth', options: { color: "#0060D6", university: "Microsoft (ESME)", url: "https://ionisesme-auth.np-auriga.nfrance.net/auth/realms/npionisesme/protocol/openid-connect/auth?client_id=np-front&redirect_uri=https%3A%2F%2Fmy.esme.fr%2F%23%2FmainContent%2Fwelcome&state=b0d51531-8196-40d8-879a-65006e6a077c&response_mode=fragment&response_type=code&scope=openid&nonce=76fd097a-cf70-4f89-8a38-2f7e80b77475&prompt=login&code_challenge=8AH2655_0ZuKl4XeB_TOu0Jbr1HJQoJdPTzG_Rf4Yig&code_challenge_method=S256" } });
   };
 
@@ -48,6 +50,16 @@ export function GetSupportedServices(redirect: (path: { pathname: string, option
       type: "other",
       image,
       onPress: () => loginAs(true),
+      variant: 'primary' as const,
+      style,
+    },
+    {
+      // Pas de compte Auriga : connexion via Supabase Auth
+      name: "school-com",
+      title: "Communication ESME",
+      type: "other",
+      icon: <Papicons name={"newspaper"} />,
+      onPress: () => redirect({ pathname: '../com/login' }),
       variant: 'primary' as const,
       style,
     },

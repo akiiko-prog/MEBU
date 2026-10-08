@@ -9,6 +9,9 @@ interface FlagsStorage {
   /** True if the user signed in as a teacher: grades and absences are hidden */
   isTeacher: boolean;
   setTeacher: (value: boolean) => void;
+  /** True if signed in with the shared school communication account (Supabase) */
+  isCom: boolean;
+  setCom: (value: boolean) => void;
 }
 
 export const useFlagsStore = create<FlagsStorage>()(
@@ -18,6 +21,8 @@ export const useFlagsStore = create<FlagsStorage>()(
       setDemoMode: (value) => set({ isDemoMode: value }),
       isTeacher: false,
       setTeacher: (value) => set({ isTeacher: value }),
+      isCom: false,
+      setCom: (value) => set({ isCom: value }),
     }),
     {
       name: "flags-storage",

@@ -8,6 +8,7 @@ import { BottomTabBarHeightContext } from 'react-native-bottom-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useAccountStore } from '@/stores/account';
+import { useFlagsStore } from '@/stores/flags';
 
 import HomeHeader from './atoms/HomeHeader';
 import HomeTopBar from './atoms/HomeTopBar';
@@ -23,6 +24,8 @@ const HomeScreen = () => {
   const bottomTabBarHeight = React.useContext(BottomTabBarHeightContext) ?? 0;
 
   const accounts = useAccountStore((state) => state.accounts);
+  // Compte com : pas d'emploi du temps (pas de compte Auriga)
+  const isCom = useFlagsStore((state) => state.isCom);
   const router = useRouter();
 
   useHomeData();
@@ -32,12 +35,12 @@ const HomeScreen = () => {
   const renderLinks = useCallback(() => <HomeLinksWidget />, []);
 
   const data: HomeWidgetItem[] = useMemo(() => [
-    {
+    ...(isCom ? [] : [{
       icon: <Papicons name={"Calendar"} />,
       title: t("Home_Widget_NextCourses"),
       redirect: "(tabs)/calendar",
       render: renderTimeTable
-    },
+    }]),
     {
       icon: <Papicons name={"newspaper"} />,
       title: t("Home_Widget_NextEvent"),
@@ -49,7 +52,7 @@ const HomeScreen = () => {
       title: t("Home_Widget_UsefulLinks"),
       render: renderLinks
     },
-  ], [renderTimeTable, renderNextEvent, renderLinks]);
+  ], [isCom, renderTimeTable, renderNextEvent, renderLinks]);
 
   useEffect(() => {
     if (accounts.length === 0) {

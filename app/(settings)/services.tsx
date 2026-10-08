@@ -21,6 +21,7 @@ export default function SettingsServices() {
   const router = useRouter();
 
   const isTeacher = useFlagsStore((state) => state.isTeacher);
+  const isCom = useFlagsStore((state) => state.isCom);
 
   const [aurigaConnected, setAurigaConnected] = useState(false);
   const [attendanceConnected, setAttendanceConnected] = useState(false);
@@ -116,7 +117,7 @@ export default function SettingsServices() {
       style={{ width: '100%', height: '100%' }}
     >
       <List>
-        <Item
+        {!isCom && <Item
           onPress={() => {
             if (aurigaConnected) {
               Alert.alert(
@@ -140,7 +141,7 @@ export default function SettingsServices() {
               {aurigaConnected ? t("Settings_Services_Connected") : t("Settings_Services_NotConnected")}
             </Typography>
           </Stack>
-        </Item>
+        </Item>}
 
         {/* Lecture seule : le profil est imposé par la whitelist enseignants */}
         <Item>
@@ -148,12 +149,12 @@ export default function SettingsServices() {
             <Typography variant="title">Profil</Typography>
             <View style={{ flex: 1 }} />
             <Typography variant="body1" color="secondary">
-              {isTeacher ? "Enseignant" : "Étudiant"}
+              {isCom ? "Communication" : isTeacher ? "Enseignant" : "Étudiant"}
             </Typography>
           </Stack>
         </Item>
 
-        {!isTeacher && <Item
+        {!isTeacher && !isCom && <Item
           onPress={() => {
             if (attendanceConnected) {
               Alert.alert(

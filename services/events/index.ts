@@ -1,9 +1,52 @@
 import { createClient } from '@supabase/supabase-js';
+import { MMKV } from 'react-native-mmkv';
 
 const supabaseUrl = 'https://lyfygwcruliolvndudtg.supabase.co';
 const supabaseKey = 'sb_publishable_h555Rcq-m-l5dSYk9DVd5Q_ep7c4wi3';
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+// Persiste la session du compte com (Supabase Auth) entre deux lancements
+const authStorage = new MMKV({ id: 'supabase-auth' });
+
+export const supabase = createClient(supabaseUrl, supabaseKey, {
+    auth: {
+        storage: {
+            getItem: (key: string) => authStorage.getString(key) ?? null,
+            setItem: (key: string, value: string) => authStorage.set(key, value),
+            removeItem: (key: string) => authStorage.delete(key),
+        },
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: false,
+    },
+});
+
+/**
+ * Connexion du compte partagé de la communication de l'école. Le compte est
+ * créé à la main dans le dashboard Supabase (Authentication > Users) : aucun
+ * mot de passe dans le code. Renvoie l'email connecté, ou null si refusé.
+ */
+export async function signInCom(email: string, password: string): Promise<string | null> {
+    const { data, error } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password,
+    });
+
+    if (error || !data.user) {
+        console.error('[Events] Connexion com refusée:', error);
+        return null;
+    }
+    return data.user.email ?? email.trim();
+}
+
+export async function signOutCom(): Promise<void> {
+    await supabase.auth.signOut();
+}
+
+/** Email du compte com connecté, ou null si aucune session. */
+export async function getComEmail(): Promise<string | null> {
+    const { data } = await supabase.auth.getSession();
+    return data.session?.user.email ?? null;
+}
 
 export interface SchoolEvent {
     id: string;

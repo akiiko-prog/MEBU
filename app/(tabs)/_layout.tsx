@@ -67,6 +67,8 @@ export default function TabLayout() {
   const { colors } = useTheme();
   // Un enseignant n'a pas de notes : onglet masqué
   const isTeacher = useFlagsStore((state) => state.isTeacher);
+  // Compte com (sans Auriga) : ni emploi du temps ni notes
+  const isCom = useFlagsStore((state) => state.isCom);
 
   // La whitelist fait foi : le profil est recalculé à chaque lancement (prof
   // retiré de la liste, ancien choix manuel...). Sans identifiants (compte
@@ -88,17 +90,18 @@ export default function TabLayout() {
     calendar: {
       title: translations.calendar,
       tabBarIcon: getCalendarIcon,
+      tabBarItemHidden: isCom,
     },
     grades: {
       title: translations.grades,
       tabBarIcon: getGradesIcon,
-      tabBarItemHidden: isTeacher,
+      tabBarItemHidden: isTeacher || isCom,
     },
     news: {
       title: translations.news,
       tabBarIcon: getNewsIcon,
     },
-  }), [translations, isTeacher]);
+  }), [translations, isTeacher, isCom]);
 
   return (
     <Tabs
