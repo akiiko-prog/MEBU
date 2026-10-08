@@ -77,7 +77,15 @@ export const AurigaRefreshProvider = ({ children }: AurigaRefreshProviderProps) 
             AurigaAPI.setToken(accessToken);
             AurigaAPI.setCookie(cookiesString);
 
-            await AurigaAPI.sync(addLog);
+            // Garde les lignes utiles pour les afficher dans l'alerte de fin :
+            // permet de diagnostiquer un EDT incomplet sans mode développeur
+            const summary: string[] = [];
+            await AurigaAPI.sync((message) => {
+                addLog(message);
+                if (/cours récupérés|Période couverte|Aucun cours trouvé|Erreur EDT/.test(message)) {
+                    summary.push(message.replace("[AURIGA] ", ""));
+                }
+            });
 
             const { accounts } = useAccountStore.getState();
             const existingAccount = accounts.find((acc) =>
@@ -101,7 +109,7 @@ export const AurigaRefreshProvider = ({ children }: AurigaRefreshProviderProps) 
             alert.showAlert({
                 id: "auriga-sync",
                 title: "Synchronisation terminée",
-                message: "Tes données Auriga sont à jour.",
+                message: summary.length > 0 ? summary.join("\n") : "Tes données Auriga sont à jour.",
                 icon: "Check",
                 color: "#00D600",
             });

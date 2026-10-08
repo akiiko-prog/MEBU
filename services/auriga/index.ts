@@ -26,8 +26,6 @@ function getSchoolYearRange() {
   return {
     startDate: `${startYear}-09-01`,
     endDate: `${startYear + 1}-08-31`,
-    from: new Date(startYear, 8, 1),
-    to: new Date(startYear + 1, 7, 31, 23, 59, 59, 999),
   };
 }
 
@@ -128,9 +126,12 @@ class AurigaAPI {
     };
 
     const store = useAccountStore.getState();
-    const aurigaService = store.accounts
-      .flatMap((acc: any) => acc.services)
-      .find((s: any) => s.auth?.additionals?.type === "auriga" || s.serviceId === Services.MULTI);
+    // Service du compte actif en priorité : avec un ancien compte encore
+    // présent, les cours étaient rattachés à lui et filtrés à l'affichage
+    const isAurigaService = (s: any) => s.auth?.additionals?.type === "auriga" || s.serviceId === Services.MULTI;
+    const activeAccount = store.accounts.find((acc: any) => acc.id === store.lastUsedAccount);
+    const aurigaService = activeAccount?.services.find(isAurigaService)
+      ?? store.accounts.flatMap((acc: any) => acc.services).find(isAurigaService);
     const aurigaServiceId = aurigaService ? aurigaService.id : "auriga";
 
     let fetchedEDT: EdtEvent[] = [];
@@ -197,9 +198,21 @@ class AurigaAPI {
 
         let courseDayList: CourseDay[] = Object.values(dayMap);
 
-        // La plage permet de supprimer les cours déplacés ou retirés d'Auriga
-        const { from, to } = getSchoolYearRange();
-        addCourseDayToDatabase(courseDayList, { from, to });
+        // La plage permet de supprimer les cours déplacés ou retirés d'Auriga.
+        // Elle est limitée à la période réellement couverte par la réponse (du
+        // premier au dernier cours reçu) et non à toute l'année : si Auriga ne
+        // renvoie qu'une partie de l'EDT, le reste n'est pas effacé.
+        const starts = edt.map(lesson => new Date(lesson.startTime).getTime()).filter(t => !isNaN(t));
+        if (starts.length > 0) {
+          const from = new Date(Math.min(...starts));
+          const to = new Date(Math.max(...starts));
+          from.setHours(0, 0, 0, 0);
+          to.setHours(23, 59, 59, 999);
+          log(`[AURIGA] Période couverte : du ${from.toLocaleDateString("fr-FR")} au ${to.toLocaleDateString("fr-FR")}`);
+          addCourseDayToDatabase(courseDayList, { from, to });
+        } else {
+          addCourseDayToDatabase(courseDayList);
+        }
 
       } else {
         log("[AURIGA] Aucun cours trouvé.");
@@ -210,6 +223,7 @@ class AurigaAPI {
       }
     } catch (e) {
       console.error("[AURIGA] Erreur lors de la récupération des cours:", e);
+      log(`[AURIGA] Erreur EDT : ${e}`);
     }
 
     // Un enseignant n'a ni notes ni syllabus : inutile de les demander à Auriga

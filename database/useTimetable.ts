@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { getICalEventsForWeek } from "@/services/local/ical";
 import { Course as SharedCourse, CourseDay as SharedCourseDay, CourseStatus } from "@/services/shared/timetable"
 import { generateId } from "@/utils/generateId";
-import { warn } from "@/utils/logger/logger";
+import { info, warn } from "@/utils/logger/logger";
 
 import { getDatabaseInstance, useDatabase } from "./DatabaseProvider"
 import { mapCourseToShared } from "./mappers/course";
@@ -248,11 +248,14 @@ export async function addCourseDayToDatabase(
               Q.where('createdByAccount', Q.oneOf(accountIds))
             )
             .fetch();
+          let removed = 0;
           for (const stale of staleCourses) {
             if (!syncedIds.has(stale.courseId)) {
               await stale.destroyPermanently();
+              removed++;
             }
           }
+          info(`[Timetable] Synchro : ${syncedIds.size} cours reçus, ${removed} cours absents supprimés`);
         }
       }
     },
