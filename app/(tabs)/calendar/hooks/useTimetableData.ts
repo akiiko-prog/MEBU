@@ -22,7 +22,9 @@ export function useTimetableData(weekNumber: number) {
   }
 
   const store = useAccountStore.getState();
-  const account = store.accounts.find(account => store.lastUsedAccount);
+  // Le compte actif, et non le premier de la liste : avec plusieurs comptes
+  // (ancienne connexion, démo...), tous les cours étaient filtrés
+  const account = store.accounts.find(account => account.id === store.lastUsedAccount) ?? store.accounts[0];
   const services: string[] = account?.services?.map((service: { id: string }) => service.id) ?? [];
 
   const rawTimetable = useTimetable(refresh, [weekNumber - 1, weekNumber, weekNumber + 1]);

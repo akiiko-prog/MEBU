@@ -51,6 +51,8 @@ export const CalendarHeader = React.memo(({ date, onDateChange, onHeaderHeightCh
             subtitle={subtitle}
             color='#D6502B'
             height={56}
+            // Les chiffres animés restaient superposés en changeant vite de jour
+            animateNumber={false}
             onPress={() => toggleDatePicker()}
             loading={isLoading}
           />

@@ -8,6 +8,7 @@ import adjust from "@/utils/adjustColor";
 
 import { runsIOS26 } from "../utils/IsLiquidGlass";
 import AnimatedNumber from "./AnimatedNumber";
+import Typography from "./Typography";
 const AnimatedPressable = Reanimated.createAnimatedComponent(Pressable);
 
 // Pre-computed styles for maximum performance
@@ -258,6 +259,8 @@ interface NativeHeaderHighlightProps extends ViewProps {
   color?: string;
   light?: boolean;
   variant?: "navigation" | "header";
+  /** false : affiche le nombre sans animation chiffre par chiffre */
+  animated?: boolean;
 }
 
 const NativeHeaderHighlight = React.memo(function NativeHeaderHighlight({
@@ -265,6 +268,7 @@ const NativeHeaderHighlight = React.memo(function NativeHeaderHighlight({
   color = DEFAULT_COLOR,
   light = false,
   variant = "navigation",
+  animated = true,
   style,
   ...props
 }: NativeHeaderHighlightProps) {
@@ -280,7 +284,11 @@ const NativeHeaderHighlight = React.memo(function NativeHeaderHighlight({
   return (
     <LayoutAnimationConfig skipEntering>
       <Reanimated.View style={viewStyle} {...props} layout={LinearTransition.springify()}>
-        {typeof children === 'string' ? (
+        {typeof children === "string" && !animated ? (
+          <Typography variant={variant} style={{ color: adjustedColor }}>
+            {children}
+          </Typography>
+        ) : typeof children === "string" ? (
           <AnimatedNumber variant={variant} style={{ color: adjustedColor }}>
             {children}
           </AnimatedNumber>

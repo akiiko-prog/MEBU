@@ -24,6 +24,8 @@ export interface TabHeaderTitleProps {
   loading?: boolean,
   height?: number,
   onPress?: () => void,
+  /** false : pas d'animation chiffre par chiffre sur le nombre */
+  animateNumber?: boolean,
 };
 
 const TabHeaderTitle: React.FC<TabHeaderTitleProps> = ({
@@ -35,7 +37,8 @@ const TabHeaderTitle: React.FC<TabHeaderTitleProps> = ({
   color,
   loading = false,
   height,
-  onPress = () => { }
+  onPress = () => { },
+  animateNumber = true,
 }) => {
   return (
     <LayoutAnimationConfig skipEntering>
@@ -73,7 +76,7 @@ const TabHeaderTitle: React.FC<TabHeaderTitleProps> = ({
 
             {number && (
               <Dynamic animated entering={PapillonAppearIn} exiting={PapillonAppearOut}>
-                <NativeHeaderHighlight variant='navigation' color={color}>{number}</NativeHeaderHighlight>
+                <NativeHeaderHighlight variant='navigation' color={color} animated={animateNumber}>{number}</NativeHeaderHighlight>
               </Dynamic>
             )}
 
