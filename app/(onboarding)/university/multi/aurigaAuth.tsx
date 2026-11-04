@@ -21,7 +21,6 @@ import Typography from "@/ui/components/Typography";
 import ViewContainer from "@/ui/components/ViewContainer";
 import { loginAurigaPure } from "@/utils/aurigaAuthWorker";
 import { getCredentials, saveAurigaRefreshToken, saveCredentials } from "@/utils/credentialStore";
-import { isTeacherAccount } from "@/utils/permission/teacherPermissions";
 import { useTranslation } from "react-i18next";
 
 export default function AurigaLoginScreen() {
@@ -255,7 +254,7 @@ export default function AurigaLoginScreen() {
             console.error("Auriga Sync Error:", error);
             alert.showAlert({
                 title: t("Settings_Services_Alert_ErrorConnection"),
-                description: t("Settings_Services_Alert_Failed_Login"),
+                description: `${t("Settings_Services_Alert_Failed_Login")} (${error instanceof Error ? error.message : String(error)})`,
                 icon: "AlertCircle",
                 color: "#D60000"
             });
@@ -265,13 +264,15 @@ export default function AurigaLoginScreen() {
 
     const handleInvalidCredentials = async (errorMsg?: string) => {
         setIsSyncing(false);
-        const description = typeof errorMsg === 'string' && errorMsg.includes('Authentification refusée')
-            ? "Mot de passe ou email incorrect."
-            : "Erreur de connexion Auriga.";
+        // Le détail renvoyé par Auriga est affiché pour savoir ce qui bloque
+        // (identifiants refusés, page inattendue, échange de token...)
+        const description = typeof errorMsg === 'string' && errorMsg.length > 0
+            ? errorMsg
+            : t("Settings_Services_Alert_Failed_Login");
 
         await alert.showAlert({
             title: t("Settings_Services_Alert_ErrorConnection"),
-            description: t("Settings_Services_Alert_Failed_Login"),
+            description,
             icon: "AlertCircle",
             color: "#D60000"
         });
@@ -357,22 +358,6 @@ export default function AurigaLoginScreen() {
                     color: "#D60000",
                 });
             }
-            return;
-        }
-
-        // Le profil choisi doit correspondre à la whitelist enseignants, dans
-        // les deux sens : un élève ne peut pas entrer en prof, ni l'inverse
-        const choseTeacher = useFlagsStore.getState().isTeacher;
-        const isTeacher = isTeacherAccount(username);
-        if (choseTeacher !== isTeacher) {
-            alert.showAlert({
-                title: "Mauvais profil",
-                description: isTeacher
-                    ? "Ce compte est un compte enseignant. Reviens en arrière et choisis « Enseignant ESME »."
-                    : "Ce compte n'est pas enregistré comme enseignant. Reviens en arrière et choisis « Étudiant ESME ».",
-                icon: "AlertCircle",
-                color: "#D60000"
-            });
             return;
         }
 

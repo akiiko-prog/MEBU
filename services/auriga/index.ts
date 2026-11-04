@@ -140,6 +140,7 @@ class AurigaAPI {
     let fetchedUserData: UserData | null = null;
 
     log("[AURIGA] Récupération des données...")
+    await this.detectProfile(log);
     try {
       const edt = await this.fetchAllEDT();
       if (edt.length > 0) {
@@ -866,6 +867,29 @@ class AurigaAPI {
     }
 
     return syllabusDetails;
+  }
+
+  /**
+   * Sets the teacher profile from what Auriga says about the account:
+   * an instructor who is not also a learner gets the teacher view (no
+   * grades, no absences). Keeps the current profile if /me is unreachable.
+   */
+  private async detectProfile(log: (msg: string) => void) {
+    if (useFlagsStore.getState().isDemoMode) {
+      return;
+    }
+    try {
+      const me = await this.getDataFromAuriga("me");
+      const person = me?.person;
+      if (!person) {
+        return;
+      }
+      const isTeacher = person.isInstructor === true && person.isLearner !== true;
+      useFlagsStore.getState().setTeacher(isTeacher);
+      log(`[AURIGA] Profil détecté : ${isTeacher ? "enseignant" : "étudiant"}.`);
+    } catch (e) {
+      log(`[AURIGA] Profil non détecté, profil actuel conservé : ${e}`);
+    }
   }
 
   private async fetchUserData(): Promise<UserData | null> {
