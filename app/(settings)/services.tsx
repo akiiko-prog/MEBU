@@ -142,7 +142,7 @@ export default function SettingsServices() {
           </Stack>
         </Item>
 
-        {/* Lecture seule : le profil est imposé par la whitelist enseignants */}
+        {/* Lecture seule : le profil est détecté depuis le compte Auriga */}
         <Item>
           <Stack direction="horizontal" vAlign="center" gap={12} style={{ flex: 1 }}>
             <Typography variant="title">Profil</Typography>
